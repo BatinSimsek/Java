@@ -5,10 +5,14 @@
  */
 package com.example.project;
 
+
+
 /**
  *
  * @author quinc
  */
 public class Main {
-    je moeder EN je vader
+    public static void main(String[] args) {
+
+    }
 }
