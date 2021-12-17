@@ -4,7 +4,7 @@ package Database;
 
 import java.sql.*;
 
-public class database {
+public class Database {
 
     public Connection getConnection() {
         try {
@@ -46,8 +46,6 @@ public class database {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
         }
-
-
     }
 
 }

@@ -5,10 +5,7 @@
  */
 package GUI;
 
-import Database.database;
-
 //Switch scene na index class
-import Domain.Cursist;
 import GUI.Student.index;
 
 import javafx.application.Application;
@@ -29,6 +26,7 @@ public class Main extends Application {
     public void start(Stage window) {
         BorderPane layout = new BorderPane();
         GridPane gridPane = new GridPane();
+        index student = new index();
 
         Button students = new Button("Studenten");
         Label titel = new Label("Welcome!");
@@ -38,7 +36,10 @@ public class Main extends Application {
         gridPane.setHgap(20);
         gridPane.setVgap(20);
 
+
         layout.setCenter(gridPane);
+        students.setOnAction((event) -> window.setScene(student.getVıew()));
+
 
         Scene scene = new Scene(layout);
 
