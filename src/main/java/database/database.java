@@ -1,6 +1,6 @@
 package database;
 
-import javafx.collections.ObservableList;
+//import javafx.collections.ObservableList;
 
 import java.sql.*;
 
@@ -25,26 +25,26 @@ public class database {
         ResultSet rs;
 
         try {
-            con = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=cursus;integratedSecurity=true;");
+            con = getConnection();
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             st = con.createStatement();
             rs = st.executeQuery(query);
 
             while (rs.next()){
                 String email = rs.getString("e_mail");
-                String name = rs.getString("naam");
-                Date geboortedatum = rs.getDate("geboortedatum");
-                String geslacht = rs.getString("geslacht");
+               String name = rs.getString("naam");
+               Date geboortedatum = rs.getDate("geboortedatum");
+              String geslacht = rs.getString("geslacht");
                 String woonplaats = rs.getString("woonplaats");
                 String adres = rs.getString("adres");
                 String land = rs.getString("land");
 
-                System.out.format(" " ,email, name, geboortedatum,geslacht,woonplaats,adres,land);
+                System.out.println(email + name + geboortedatum + geslacht + woonplaats + adres + land);
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
 
 
