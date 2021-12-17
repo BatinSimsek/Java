@@ -20,6 +20,5 @@ public class Main {
     public static void main(String[] args) {
        database database = new database();
        database.showCursisten();
-
     }
 }

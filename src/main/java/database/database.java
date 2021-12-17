@@ -30,11 +30,11 @@ public class database {
             st = con.createStatement();
             rs = st.executeQuery(query);
 
-            while (rs.next()){
+            while (rs.next()) {
                 String email = rs.getString("e_mail");
-               String name = rs.getString("naam");
-               Date geboortedatum = rs.getDate("geboortedatum");
-              String geslacht = rs.getString("geslacht");
+                String name = rs.getString("naam");
+                Date geboortedatum = rs.getDate("geboortedatum");
+                String geslacht = rs.getString("geslacht");
                 String woonplaats = rs.getString("woonplaats");
                 String adres = rs.getString("adres");
                 String land = rs.getString("land");
