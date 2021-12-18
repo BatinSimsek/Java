@@ -9,11 +9,14 @@ package GUI;
 import GUI.Student.index;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 
@@ -25,20 +28,23 @@ public class Main extends Application {
     @Override
     public void start(Stage window) {
         BorderPane layout = new BorderPane();
+        layout.setPrefSize(400,400);
+        HBox menu = new HBox();
+        layout.setTop(menu);
+        menu.setPadding(new Insets(10));
+        menu.setSpacing(25);
+
         GridPane gridPane = new GridPane();
         index student = new index();
 
-        Button students = new Button("Studenten");
-        Label titel = new Label("Welcome!");
-
-        layout.setTop(titel);
-        gridPane.add(students, 1, 1);
-        gridPane.setHgap(20);
-        gridPane.setVgap(20);
-
+        Button studentBtn = new Button("Studenten");
+        Button courseBtn = new Button("Course");
+        Button moduleBtn = new Button("Module");
+        Button webcastBtn = new Button("Webcast");
+        menu.getChildren().addAll(studentBtn, courseBtn, moduleBtn, webcastBtn);
 
         layout.setCenter(gridPane);
-        students.setOnAction((event) -> window.setScene(student.getVıew()));
+        studentBtn.setOnAction((event) -> window.setScene(student.getVıew()));
 
 
         Scene scene = new Scene(layout);

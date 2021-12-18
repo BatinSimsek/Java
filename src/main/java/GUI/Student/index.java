@@ -1,10 +1,13 @@
 package GUI.Student;
 
+import Database.Database;
 import Domain.Cursist;
 
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
@@ -12,13 +15,12 @@ public class index {
 
 
     public Scene getVıew() {
+        Database database = new Database();
+        Parent layouts = database.getViewCursist();
 
-        BorderPane layouts = new BorderPane();
-        GridPane gridLayout = new GridPane();
 
-        TableColumn<Cursist, String> column1 = new TableColumn<>("email");
-        Label label = new Label("test");
-        layouts.setCenter(label);
+
+
 
         Scene scene = new Scene(layouts);
 

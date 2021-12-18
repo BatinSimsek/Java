@@ -7,13 +7,13 @@ public class Cursist {
     private String email;
     private String naam;
     private Date geboorteDatum;
-    private char geslacht;
+    private String geslacht;
     private String woonPlaats;
     private String adres;
     private String land;
 
     //constructor
-    public Cursist(String email, String naam, Date geboorteDatum, char geslacht, String woonPlaats, String adres, String land) {
+    public Cursist(String email, String naam, Date geboorteDatum, String geslacht, String woonPlaats, String adres, String land) {
         this.email = email;
         this.naam = naam;
         this.geboorteDatum = geboorteDatum;
@@ -38,7 +38,7 @@ public class Cursist {
         return geboorteDatum;
     }
 
-    public char getGeslacht() {
+    public String getGeslacht() {
         return geslacht;
     }
 
@@ -66,7 +66,7 @@ public class Cursist {
         this.geboorteDatum = geboorteDatum;
     }
 
-    public void setGeslacht(char geslacht) {
+    public void setGeslacht(String geslacht) {
         this.geslacht = geslacht;
     }
 
