@@ -18,13 +18,7 @@ public class index {
         Database database = new Database();
         Parent layouts = database.getViewCursist();
 
-
-
-
-
         Scene scene = new Scene(layouts);
-
-
 
         return scene;
     }

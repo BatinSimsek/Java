@@ -6,7 +6,6 @@ import java.sql.*;
 import Domain.Cursist;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -14,8 +13,15 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 
 public class Database {
-    private TableView<Cursist> cursistTable;
-    private TableColumn<Cursist, String> emailCol;
+    private TableView<Cursist> cursistTable = new TableView<>();
+    private TableColumn<Cursist, String> emailCol = new TableColumn<>();
+    private TableColumn<Cursist, String> nameCol = new TableColumn<>();
+    private TableColumn<Cursist, Date> geboCol = new TableColumn<>();
+    private TableColumn<Cursist, String> gesCol = new TableColumn<>() ;
+    private TableColumn<Cursist, String> woonCol = new TableColumn<>();
+    private TableColumn<Cursist, String> adresCol = new TableColumn<>() ;
+    private TableColumn<Cursist, String> landCol = new TableColumn<>();
+
 
 
     public Connection getConnection() {
@@ -72,11 +78,16 @@ public class Database {
 
     public Parent getViewCursist(){
         ObservableList<Cursist> list = getCursist();
-        this.emailCol.setCellValueFactory(new PropertyValueFactory<Cursist, String>("e_mail"));
-        cursistTable.setItems(list);
         BorderPane bp = new BorderPane();;
-        this.emailCol.setCellValueFactory(new PropertyValueFactory<Cursist, String>("e_mail"));
-        this.cursistTable.getColumns().add(this.emailCol);
+        this.emailCol.setCellValueFactory(new PropertyValueFactory<>("e_mail"));
+        this.nameCol.setCellValueFactory(new PropertyValueFactory<>("naam"));
+        this.gesCol.setCellValueFactory(new PropertyValueFactory<>("geslacht"));
+        this.geboCol.setCellValueFactory(new PropertyValueFactory<>("geboortedatum"));
+        this.woonCol.setCellValueFactory(new PropertyValueFactory<>("woonplaats"));
+        this.adresCol.setCellValueFactory(new PropertyValueFactory<>("adres"));
+        this.landCol.setCellValueFactory(new PropertyValueFactory<>("land"));
+        this.cursistTable.setItems(list);
+        this.cursistTable.getColumns().addAll(this.emailCol, this.nameCol, this.geboCol, this.gesCol, this.woonCol,this.adresCol, this.landCol);
         bp.setCenter(this.cursistTable);
 
         return bp;
