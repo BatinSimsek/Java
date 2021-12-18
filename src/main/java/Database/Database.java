@@ -50,11 +50,11 @@ public class Database {
             rs = st.executeQuery(query);
 
             while (rs.next()) {
-                String email = rs.getString("e_mail");
+                String email = rs.getString("email");
                 String name = rs.getString("naam");
-                Date geboortedatum = rs.getDate("geboortedatum");
+                Date geboortedatum = rs.getDate("geboorteDatum");
                 String geslacht = rs.getString("geslacht");
-                String woonplaats = rs.getString("woonplaats");
+                String woonplaats = rs.getString("woonPlaats");
                 String adres = rs.getString("adres");
                 String land = rs.getString("land");
                 Cursist cursist = new Cursist(email, name, geboortedatum, geslacht, woonplaats, adres, land);
@@ -71,7 +71,7 @@ public class Database {
     }
     public void showCursists(){
         ObservableList<Cursist> list = getCursist();
-        emailCol.setCellValueFactory(new PropertyValueFactory<Cursist, String>("e_mail"));
+        emailCol.setCellValueFactory(new PropertyValueFactory<Cursist, String>("email"));
         cursistTable.setItems(list);
 
     }
@@ -79,11 +79,11 @@ public class Database {
     public Parent getViewCursist(){
         ObservableList<Cursist> list = getCursist();
         BorderPane bp = new BorderPane();;
-        this.emailCol.setCellValueFactory(new PropertyValueFactory<>("e_mail"));
+        this.emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
         this.nameCol.setCellValueFactory(new PropertyValueFactory<>("naam"));
         this.gesCol.setCellValueFactory(new PropertyValueFactory<>("geslacht"));
-        this.geboCol.setCellValueFactory(new PropertyValueFactory<>("geboortedatum"));
-        this.woonCol.setCellValueFactory(new PropertyValueFactory<>("woonplaats"));
+        this.geboCol.setCellValueFactory(new PropertyValueFactory<>("geboorteDatum"));
+        this.woonCol.setCellValueFactory(new PropertyValueFactory<>("woonPlaats"));
         this.adresCol.setCellValueFactory(new PropertyValueFactory<>("adres"));
         this.landCol.setCellValueFactory(new PropertyValueFactory<>("land"));
         this.cursistTable.setItems(list);
