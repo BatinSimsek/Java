@@ -95,6 +95,8 @@ public class Index {
         hbox.setPadding(new Insets(20, 0, 0, 0));
     }
 
+
+
     private void getDataTable(ObservableList<Cursist> list, BorderPane bp) {
         this.emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
         this.nameCol.setCellValueFactory(new PropertyValueFactory<>("naam"));
