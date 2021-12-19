@@ -70,7 +70,6 @@ public class Index {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
         return cursistObservableList;
     }
@@ -79,9 +78,24 @@ public class Index {
         ObservableList<Cursist> list = getCursist();
         BorderPane bp = new BorderPane();
         GridPane gridPane = new GridPane();
-        HBox hbox = new HBox ();
+        HBox hbox = new HBox();
 
+        getDataTable(list, bp);
+        getButtonsLayout(hbox);
+        getUserInputLayout(bp, gridPane, hbox);
 
+        return bp;
+    }
+
+    private void getButtonsLayout(HBox hbox) {
+        btnInsert.setOnAction((event) -> toevoegen());
+
+        hbox.getChildren().setAll(btnInsert, btnUpdate, btnDelete);
+        hbox.setSpacing(25);
+        hbox.setPadding(new Insets(20, 0, 0, 0));
+    }
+
+    private void getDataTable(ObservableList<Cursist> list, BorderPane bp) {
         this.emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
         this.nameCol.setCellValueFactory(new PropertyValueFactory<>("naam"));
         this.gesCol.setCellValueFactory(new PropertyValueFactory<>("geslacht"));
@@ -93,22 +107,18 @@ public class Index {
         this.cursistTable.getColumns().addAll(this.emailCol, this.nameCol, this.geboCol, this.gesCol, this.woonCol, this.adresCol, this.landCol);
         bp.setRight(this.cursistTable);
         bp.setPadding(new Insets(25, 25, 25, 25));
+    }
 
+    private void getUserInputLayout(BorderPane bp, GridPane gridPane, HBox hbox) {
         gridPane.setVgap(10);
-        gridPane.setPadding(new Insets(25,25,25,25));
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
         bp.setLeft(gridPane);
 
-        btnInsert.setOnAction((event)->toevoegen());
-
-        hbox.getChildren().setAll(btnInsert, btnUpdate, btnDelete);
-        hbox.setSpacing(25);
-        hbox.setPadding(new Insets(20, 0, 0 , 0));
-
         gridPane.add(emailLabel, 0, 0);
-        gridPane.add(tfEmail, 1 ,0);
-        gridPane.add(naamLabel, 0,1);
+        gridPane.add(tfEmail, 1, 0);
+        gridPane.add(naamLabel, 0, 1);
         gridPane.add(tfNaam, 1, 1);
-        gridPane.add(geboorteDatumLabel, 0,2);
+        gridPane.add(geboorteDatumLabel, 0, 2);
         gridPane.add(tfGeboorteDatum, 1, 2);
         gridPane.add(geslachtLabel, 0, 3);
         gridPane.add(tfGeslacht, 1, 3);
@@ -119,43 +129,30 @@ public class Index {
         gridPane.add(landLabel, 0, 6);
         gridPane.add(tfLand, 1, 6);
         gridPane.add(hbox, 0, 7);
-
-
-
-        return bp;
     }
 
-    public void toevoegen(){
+    public void toevoegen() {
         String query = "INSERT INTO cursisten VALUES('" + this.tfEmail.getText() + "','"
                 + this.tfNaam.getText() + "','" + this.tfGeboorteDatum.getText() + "','"
                 + this.tfGeslacht.getText() + "','" + this.tfWoonplaats.getText() + "','"
-                + this.tfAdres.getText() + "','" + this.tfLand.getText()+ "')";
-
+                + this.tfAdres.getText() + "','" + this.tfLand.getText() + "')";
         this.VoerQueryUit(query);
         this.readCursist();
-
     }
 
-    public void VoerQueryUit(String query){
+    public void VoerQueryUit(String query) {
         Connection conn = db.getConnection();
-        try{
+        try {
             Statement st = conn.createStatement();
             st.executeUpdate(query);
-        }
-         catch (SQLException throwables) {
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
-
     }
 
     public Scene getVıew() {
         Parent layout = this.readCursist();
-
         Scene scene = new Scene(layout);
-
         return scene;
     }
-
 }
-
