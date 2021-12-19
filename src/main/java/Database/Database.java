@@ -14,19 +14,19 @@ import javafx.scene.layout.BorderPane;
 
 public class Database {
     private TableView<Cursist> cursistTable = new TableView<>();
-    private TableColumn<Cursist, String> emailCol = new TableColumn<>();
-    private TableColumn<Cursist, String> nameCol = new TableColumn<>();
-    private TableColumn<Cursist, Date> geboCol = new TableColumn<>();
-    private TableColumn<Cursist, String> gesCol = new TableColumn<>() ;
-    private TableColumn<Cursist, String> woonCol = new TableColumn<>();
-    private TableColumn<Cursist, String> adresCol = new TableColumn<>() ;
-    private TableColumn<Cursist, String> landCol = new TableColumn<>();
+    private TableColumn<Cursist, String> emailCol = new TableColumn<>("Email");
+    private TableColumn<Cursist, String> nameCol = new TableColumn<>("Naam");
+    private TableColumn<Cursist, Date> geboCol = new TableColumn<>("GeboorteDatum");
+    private TableColumn<Cursist, String> gesCol = new TableColumn<>("Geslacht") ;
+    private TableColumn<Cursist, String> woonCol = new TableColumn<>("Woonplaats");
+    private TableColumn<Cursist, String> adresCol = new TableColumn<>("Adres") ;
+    private TableColumn<Cursist, String> landCol = new TableColumn<>("Land");
 
 
 
     public Connection getConnection() {
         try {
-            Connection connect = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=cursus;integratedSecurity=true;");
+            Connection connect = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=Codecademy;integratedSecurity=true;");
             return connect;
 
         } catch (SQLException e) {
@@ -39,7 +39,7 @@ public class Database {
     public ObservableList<Cursist> getCursist() {
         ObservableList<Cursist> cursistObservableList = FXCollections.observableArrayList();
         //test
-        String query = "SELECT * FROM cursisten";
+        String query = "SELECT * FROM Cursisten";
         Connection con;
         Statement st;
         ResultSet rs;
