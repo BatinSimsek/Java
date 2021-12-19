@@ -38,6 +38,7 @@ public class Database {
 
     public ObservableList<Cursist> getCursist() {
         ObservableList<Cursist> cursistObservableList = FXCollections.observableArrayList();
+        //test
         String query = "SELECT * FROM cursisten";
         Connection con;
         Statement st;
