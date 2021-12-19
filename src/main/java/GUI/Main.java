@@ -6,36 +6,33 @@
 package GUI;
 
 //Switch scene na index class
-import GUI.Student.index;
+import GUI.Student.Index;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-
 
 /**
  * @author quinc
  */
 public class Main extends Application {
+    private Index student = new Index();
 
     @Override
     public void start(Stage window) {
         BorderPane layout = new BorderPane();
-        layout.setPrefSize(400,400);
+        layout.setPrefSize(600,600);
         HBox menu = new HBox();
         layout.setTop(menu);
         menu.setPadding(new Insets(10));
         menu.setSpacing(25);
 
-        GridPane gridPane = new GridPane();
-        index student = new index();
+
+
 
         Button studentBtn = new Button("Studenten");
         Button courseBtn = new Button("Course");
@@ -43,7 +40,7 @@ public class Main extends Application {
         Button webcastBtn = new Button("Webcast");
         menu.getChildren().addAll(studentBtn, courseBtn, moduleBtn, webcastBtn);
 
-        layout.setCenter(gridPane);
+
         studentBtn.setOnAction((event) -> window.setScene(student.getVıew()));
 
 
