@@ -6,14 +6,14 @@ public class Cursist {
 
     private String email;
     private String naam;
-    private Date geboorteDatum;
+    private String geboorteDatum;
     private String geslacht;
     private String woonPlaats;
     private String adres;
     private String land;
 
     //constructor
-    public Cursist(String email, String naam, Date geboorteDatum, String geslacht, String woonPlaats, String adres, String land) {
+    public Cursist(String email, String naam, String geboorteDatum, String geslacht, String woonPlaats, String adres, String land) {
         this.email = email;
         this.naam = naam;
         this.geboorteDatum = geboorteDatum;
@@ -34,7 +34,7 @@ public class Cursist {
         return naam;
     }
 
-    public Date getGeboorteDatum() {
+    public String getGeboorteDatum() {
         return geboorteDatum;
     }
 
@@ -62,7 +62,7 @@ public class Cursist {
         this.naam = naam;
     }
 
-    public void setGeboorteDatum(Date geboorteDatum) {
+    public void setGeboorteDatum(String geboorteDatum) {
         this.geboorteDatum = geboorteDatum;
     }
 

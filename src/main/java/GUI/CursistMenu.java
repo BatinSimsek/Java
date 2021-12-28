@@ -1,12 +1,12 @@
-package GUI.Student;
+package GUI;
 
 import Database.Database;
 import Domain.Cursist;
+import Database.CursistController;
 
-import javafx.collections.FXCollections;
+
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -14,14 +14,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 
-public class Index {
+public class CursistMenu {
     private Database db = new Database();
+    private CursistController cController = new CursistController();
     private TableView<Cursist> cursistTable = new TableView<>();
     private TableColumn<Cursist, String> emailCol = new TableColumn<>("Email");
     private TableColumn<Cursist, String> nameCol = new TableColumn<>("Naam");
@@ -48,40 +47,11 @@ public class Index {
     private Button btnDelete = new Button("Verwijderen");
     private Button btnUpdate = new Button("Update");
 
-    public ObservableList<Cursist> getCursist() {
-        ObservableList<Cursist> cursistObservableList = FXCollections.observableArrayList();
-        String query = "SELECT * FROM Cursisten";
-
-        try {
-            Connection con = db.getConnection();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(query);
-
-            while (rs.next()) {
-                Cursist cursist = new Cursist(
-                        rs.getString("email"),
-                        rs.getString("naam"),
-                        rs.getDate("geboorteDatum"),
-                        rs.getString("geslacht"),
-                        rs.getString("woonPlaats"),
-                        rs.getString("adres"),
-                        rs.getString("land"));
-                cursistObservableList.add(cursist);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-
-        }
-        return cursistObservableList;
-    }
-
-    public Parent readCursist() {
-        ObservableList<Cursist> list = getCursist();
-        BorderPane bp = new BorderPane();
-        GridPane gridPane = new GridPane();
-        HBox hbox = new HBox ();
 
 
+    // onderstaande methode zet cursisten data in de cellen van de tabel.
+    public void toonCursisten(){
+        ObservableList<Cursist> cursistenLijst = cController.getCursistLijst();
         this.emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
         this.nameCol.setCellValueFactory(new PropertyValueFactory<>("naam"));
         this.gesCol.setCellValueFactory(new PropertyValueFactory<>("geslacht"));
@@ -89,20 +59,31 @@ public class Index {
         this.woonCol.setCellValueFactory(new PropertyValueFactory<>("woonPlaats"));
         this.adresCol.setCellValueFactory(new PropertyValueFactory<>("adres"));
         this.landCol.setCellValueFactory(new PropertyValueFactory<>("land"));
-        this.cursistTable.setItems(list);
-        this.cursistTable.getColumns().addAll(this.emailCol, this.nameCol, this.geboCol, this.gesCol, this.woonCol, this.adresCol, this.landCol);
-        bp.setRight(this.cursistTable);
+        this.cursistTable.setItems(cursistenLijst);
+    }
+
+    // methode maakt GUI voor cursisten
+    public Scene maakGUI() {
+
+        BorderPane bp = new BorderPane();
         bp.setPadding(new Insets(25, 25, 25, 25));
 
+        GridPane gridPane = new GridPane();
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(25,25,25,25));
-        bp.setLeft(gridPane);
 
-        btnInsert.setOnAction((event)->toevoegen());
-
-        hbox.getChildren().setAll(btnInsert, btnUpdate, btnDelete);
+        HBox hbox = new HBox ();
+        hbox.getChildren().setAll(this.btnInsert, this.btnUpdate, this.btnDelete);
         hbox.setSpacing(25);
         hbox.setPadding(new Insets(20, 0, 0 , 0));
+
+        this.btnInsert.setOnAction((event)->this.recordToevoegen());
+
+        this.cursistTable.getColumns().addAll(this.emailCol, this.nameCol, this.geboCol, this.gesCol, this.woonCol, this.adresCol, this.landCol);
+
+        bp.setRight(this.cursistTable);
+        bp.setLeft(gridPane);
+        this.toonCursisten();
 
         gridPane.add(emailLabel, 0, 0);
         gridPane.add(tfEmail, 1 ,0);
@@ -120,42 +101,32 @@ public class Index {
         gridPane.add(tfLand, 1, 6);
         gridPane.add(hbox, 0, 7);
 
-
-
-        return bp;
-    }
-
-    public void toevoegen(){
-        String query = "INSERT INTO cursisten VALUES('" + this.tfEmail.getText() + "','"
-                + this.tfNaam.getText() + "','" + this.tfGeboorteDatum.getText() + "','"
-                + this.tfGeslacht.getText() + "','" + this.tfWoonplaats.getText() + "','"
-                + this.tfAdres.getText() + "','" + this.tfLand.getText()+ "')";
-
-        this.VoerQueryUit(query);
-        this.readCursist();
-
-    }
-
-    public void VoerQueryUit(String query){
-        Connection conn = db.getConnection();
-        try{
-            Statement st = conn.createStatement();
-            st.executeUpdate(query);
-        }
-         catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-
-    }
-
-    public Scene getVıew() {
-        Parent layout = this.readCursist();
-
-        Scene scene = new Scene(layout);
-
+        Scene scene = new Scene(bp);
         return scene;
     }
 
+
+
+    //De methoden die toevoegButton moet uitvoeren
+    private void recordToevoegen(){
+        String query = cController.toevoegQuery(
+                this.tfEmail.getText(),
+                this.tfNaam.getText(),
+                this.tfGeboorteDatum.getText(),
+                this.tfGeslacht.getText(),
+                this.tfWoonplaats.getText(),
+                this.tfAdres.getText(),
+                this.tfWoonplaats.getText());
+        cController.VoerQueryUit(query);
+        this.toonCursisten();
+    }
+
+//    public Scene getVıew() {
+//        Parent layout = this.maakGUI();
+//
+//        Scene scene = new Scene(layout);
+//
+//        return scene;
+//    }
 }
 
