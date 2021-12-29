@@ -137,9 +137,8 @@ public class CursistMenu {
             TablePosition pos = cursistTable.getSelectionModel().getSelectedCells().get(0);
             int row = pos.getRow();
             Cursist cursist = cursistTable.getItems().get(row);
-            TableColumn col = pos.getTableColumn();
-            String data = (String) col.getCellObservableValue(cursist).getValue();
-            String query = cController.deleteQuery(data);
+
+            String query = cController.deleteQuery(cursist.getEmail());
             this.cController.runQuery(query);
             this.showCursists();
         }
