@@ -16,7 +16,7 @@ private Database db = new Database();
 
 
 // Onderstaande methode geeft een lijst met cursist objecten.
-    public ObservableList<Cursist> getCursistLijst() {
+    public ObservableList<Cursist> getCursistList() {
         ObservableList<Cursist> CursistLijst = FXCollections.observableArrayList();
         String query = "SELECT * FROM Cursisten";
 
@@ -43,7 +43,7 @@ private Database db = new Database();
     }
 
     //Deze methoden voert een query uit.
-    public void VoerQueryUit(String query){
+    public void runQuery(String query){
         Connection conn = db.getConnection();
         try{
             Statement st = conn.createStatement();
@@ -55,11 +55,17 @@ private Database db = new Database();
     }
 
     // Deze methode stelt een query samen om een cursist record toe te voegen.
-    public String toevoegQuery (String email, String naam, String gbDatum, String geslacht, String wPlaats, String adres, String land){
+    public String insertQuery (String email, String naam, String gbDatum, String geslacht, String wPlaats, String adres, String land){
         String query = "INSERT INTO cursisten VALUES('" + email + "','"
                 + naam + "','" + gbDatum + "','"
                + geslacht + "','" + wPlaats + "','"
                + adres + "','" + land + "')";
      return query;
+    }
+
+    //Deze methode stelt een query samen om een cursist record te verwijderen
+    public String deleteQuery (String email){
+        String query = "DELETE FROM cursisten WHERE email =" + "'" + email + "'";
+        return query;
     }
 }

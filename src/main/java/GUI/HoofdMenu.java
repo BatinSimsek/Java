@@ -36,7 +36,7 @@ public class HoofdMenu extends Application {
         Button moduleBtn = new Button("Module");
         Button webcastBtn = new Button("Webcast");
         menu.getChildren().addAll(studentBtn, courseBtn, moduleBtn, webcastBtn);
-        studentBtn.setOnAction((event) -> window.setScene(cMenu.maakGUI()));
+        studentBtn.setOnAction((event) -> window.setScene(cMenu.getView()));
         courseBtn.setOnAction((event) -> window.setScene(coursMenu.makeCurist()));
         Scene scene = new Scene(layout);
         window.setScene(scene);
