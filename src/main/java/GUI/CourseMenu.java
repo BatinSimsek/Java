@@ -2,6 +2,7 @@ package GUI;
 
 import Database.CourseController;
 import Domain.Cursist;
+import Domain.Level;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -37,9 +38,10 @@ public class CourseMenu {
         hbox.setSpacing(25);
         hbox.setPadding(new Insets(20, 0, 0 , 0));
 
-        drMenuBox.getItems().add("BEGINNER");
-        drMenuBox.getItems().add("ADVANCED");
-        drMenuBox.getItems().add("EXPERT");
+        for (Level level : Level.values()) {
+            drMenuBox.getItems().add(level);
+        }
+
 
         bp.setLeft(gridPane);
 
