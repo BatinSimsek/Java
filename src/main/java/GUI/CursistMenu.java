@@ -5,6 +5,8 @@ import Domain.Cursist;
 import Database.CursistController;
 
 
+import Domain.Geslacht;
+import Domain.Level;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -39,7 +41,7 @@ public class CursistMenu {
     private TextField tfEmail = new TextField();
     private TextField tfNaam = new TextField();
     private TextField tfGeboorteDatum = new TextField();
-    private TextField tfGeslacht = new TextField();
+    private ComboBox drMenuBox = new ComboBox();
     private TextField tfWoonplaats = new TextField();
     private TextField tfAdres = new TextField();
     private TextField tfLand = new TextField();
@@ -85,6 +87,10 @@ public class CursistMenu {
         bp.setLeft(gridPane);
         this.toonCursisten();
 
+        for (Geslacht geslacht : Geslacht.values()) {
+            drMenuBox.getItems().add(geslacht);
+        }
+
         gridPane.add(emailLabel, 0, 0);
         gridPane.add(tfEmail, 1 ,0);
         gridPane.add(naamLabel, 0,1);
@@ -92,7 +98,7 @@ public class CursistMenu {
         gridPane.add(geboorteDatumLabel, 0,2);
         gridPane.add(tfGeboorteDatum, 1, 2);
         gridPane.add(geslachtLabel, 0, 3);
-        gridPane.add(tfGeslacht, 1, 3);
+        gridPane.add(drMenuBox, 1, 3);
         gridPane.add(woonplaatsLabel, 0, 4);
         gridPane.add(tfWoonplaats, 1, 4);
         gridPane.add(adresLabel, 0, 5);
@@ -113,7 +119,7 @@ public class CursistMenu {
                 this.tfEmail.getText(),
                 this.tfNaam.getText(),
                 this.tfGeboorteDatum.getText(),
-                this.tfGeslacht.getText(),
+                this.drMenuBox.getValue().toString(),
                 this.tfWoonplaats.getText(),
                 this.tfAdres.getText(),
                 this.tfWoonplaats.getText());
