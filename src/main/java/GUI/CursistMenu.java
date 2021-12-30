@@ -1,6 +1,7 @@
 package GUI;
 
 import Database.Database;
+import Domain.Course;
 import Domain.Cursist;
 import Database.CursistController;
 
@@ -53,12 +54,12 @@ public class CursistMenu {
     public void showCursists(){
         ObservableList<Cursist> cursistenLijst = cController.getCursistList();
         this.emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
-        this.nameCol.setCellValueFactory(new PropertyValueFactory<>("naam"));
-        this.gesCol.setCellValueFactory(new PropertyValueFactory<>("geslacht"));
-        this.geboCol.setCellValueFactory(new PropertyValueFactory<>("geboorteDatum"));
-        this.woonCol.setCellValueFactory(new PropertyValueFactory<>("woonPlaats"));
-        this.adresCol.setCellValueFactory(new PropertyValueFactory<>("adres"));
-        this.landCol.setCellValueFactory(new PropertyValueFactory<>("land"));
+        this.nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        this.gesCol.setCellValueFactory(new PropertyValueFactory<>("sex"));
+        this.geboCol.setCellValueFactory(new PropertyValueFactory<>("birthdate"));
+        this.woonCol.setCellValueFactory(new PropertyValueFactory<>("city"));
+        this.adresCol.setCellValueFactory(new PropertyValueFactory<>("address"));
+        this.landCol.setCellValueFactory(new PropertyValueFactory<>("country"));
         this.cursistTable.setItems(cursistenLijst);
     }
 
@@ -79,7 +80,8 @@ public class CursistMenu {
 
         this.btnInsert.setOnAction((event)->this.insertRecord());
         this.btnDelete.setOnAction((event)->this.deleteRecord());
-
+        this.btnUpdate.setOnAction((event)->this.updateRecord());
+        this.setCellValueFromTableToTextField();
         this.cursistTable.getColumns().addAll(this.emailCol, this.nameCol, this.geboCol, this.gesCol, this.woonCol, this.adresCol, this.landCol);
 
         bp.setRight(this.cursistTable);
@@ -114,7 +116,7 @@ public class CursistMenu {
 
     //De methoden die toevoegButton moet uitvoeren
     private void insertRecord(){
-        String query = cController.insertQuery(
+        String query = cController.makeInsertQuery(
                 this.tfEmail.getText(),
                 this.tfName.getText(),
                 this.tfBirthDate.getText(),
@@ -122,7 +124,7 @@ public class CursistMenu {
                 this.tfCity.getText(),
                 this.tfAddress.getText(),
                 this.tfCountry.getText());
-        cController.runQuery(query);
+        cController.executeQuery(query);
         this.showCursists();
     }
 
@@ -132,16 +134,50 @@ public class CursistMenu {
             Alert warningAlert = new Alert(Alert.AlertType.WARNING);
             warningAlert.setContentText("Geen record geselecteerd");
             warningAlert.show();}
+
         // Ophalen en vervolgens verwijderen van record a.d.h.v muisselectie
         else {
             TablePosition pos = cursistTable.getSelectionModel().getSelectedCells().get(0);
             int row = pos.getRow();
             Cursist cursist = cursistTable.getItems().get(row);
 
-            String query = cController.deleteQuery(cursist.getEmail());
-            this.cController.runQuery(query);
+            String query = cController.makeDeleteQuery(cursist.getEmail());
+            this.cController.executeQuery(query);
             this.showCursists();
         }
+    }
+
+    public void updateRecord() {
+        if (cursistTable.getSelectionModel().getSelectedItem() == null) {
+            Alert warningAlert = new Alert(Alert.AlertType.WARNING);
+            warningAlert.setContentText("Geen record geselecteerd");
+            warningAlert.show();}
+        else {
+            String query = cController.makeUpdateQuery(
+                    this.tfEmail.getText(),
+                    this.tfName.getText(),
+                    this.tfBirthDate.getText(),
+                    this.drMenuBox.getValue().toString(),
+                    this.tfCity.getText(),
+                    this.tfAddress.getText(),
+                    this.tfCountry.getText());
+            cController.executeQuery(query);
+            this.showCursists();
+        }
+    }
+
+    //Zet data in de inputfields door op een cel van de tabel te klikken.
+    public void setCellValueFromTableToTextField(){
+        cursistTable.setOnMouseClicked(e -> {
+            Cursist cursist = cursistTable.getItems().get(cursistTable.getSelectionModel().getSelectedIndex());
+            this.tfEmail.setText(cursist.getEmail());
+            this.tfName.setText(cursist.getName());
+            this.tfBirthDate.setText(cursist.getBirthdate());
+            this.drMenuBox.setValue(cursist.getSex());
+            this.tfCity.setText(cursist.getCity());
+            this.tfAddress.setText(cursist.getAddress());
+            this.tfCountry.setText(cursist.getCountry());
+        });
     }
 }
 

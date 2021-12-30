@@ -2,6 +2,7 @@ package GUI;
 
 import Database.CourseController;
 import Domain.Course;
+import Domain.Cursist;
 import Domain.Level;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -14,7 +15,7 @@ import javafx.scene.layout.HBox;
 
 public class CourseMenu {
     private CourseController coursesController = new CourseController();
-    private TableView<Course> cursusTable = new TableView<>();
+    private TableView<Course> courseTable = new TableView<>();
     private TableColumn<Course, String> cursusNameTable = new TableColumn<>("Cursusnaam");
     private TableColumn<Course, String> subjectTable = new TableColumn<>("Onderwerp");
     private TableColumn<Course, String> descriptionTable = new TableColumn<>("Introductietekst");
@@ -23,7 +24,7 @@ public class CourseMenu {
     private TextField tfTopic = new TextField();
     private TextArea tfDescription = new TextArea();
     private ComboBox drMenuBox = new ComboBox();
-    private Label courseName = new Label("Courses naam: ");
+    private Label courseName = new Label("Cursusnaam: ");
     private Label topic = new Label("Onderwerp: ");
     private Label description = new Label("Beschrijving: ");
     private Label level = new Label("Level: ");
@@ -32,17 +33,17 @@ public class CourseMenu {
     private Button btnUpdate = new Button("Update");
 
 
-    public void showCursus(){
+    public void showCourse(){
         ObservableList<Course> courseTable = coursesController.getCourse();
-        this.cursusTable.refresh();
-        this.cursusNameTable.setCellValueFactory(new PropertyValueFactory<>("courses"));
+        this.courseTable.refresh();
+        this.cursusNameTable.setCellValueFactory(new PropertyValueFactory<>("course"));
         this.subjectTable.setCellValueFactory(new PropertyValueFactory<>("topic"));
         this.descriptionTable.setCellValueFactory(new PropertyValueFactory<>("description"));
         this.levelTable.setCellValueFactory(new PropertyValueFactory<>("level"));
-        this.cursusTable.setItems(courseTable);
+        this.courseTable.setItems(courseTable);
     }
 
-    public Scene makeCurist() {
+    public Scene getView() {
         BorderPane bp = new BorderPane();
         bp.setPadding(new Insets(25, 25, 25, 25));
 
@@ -55,14 +56,16 @@ public class CourseMenu {
         hbox.setSpacing(25);
         hbox.setPadding(new Insets(20, 0, 0 , 0));
 
-        this.btnInsert.setOnAction((event)->this.recordAdd());
+        this.btnInsert.setOnAction((event)->this.insertRecord());
         this.btnUpdate.setOnAction((event)->this.updateRecord());
-        setCellValueFromTableToTextField();
-        this.cursusTable.getColumns().addAll(this.cursusNameTable, this.subjectTable, this.descriptionTable, this.levelTable);
+        this.btnDelete.setOnAction((event)->this.deleteRecord());
 
-        bp.setRight(this.cursusTable);
+        setCellValueFromTableToTextField();
+        this.courseTable.getColumns().addAll(this.cursusNameTable, this.subjectTable, this.descriptionTable, this.levelTable);
+
+        bp.setRight(this.courseTable);
         bp.setLeft(gridPane);
-        this.showCursus();
+        this.showCourse();
 
         for (Level level : Level.values()) {
             drMenuBox.getItems().add(level);
@@ -83,33 +86,58 @@ public class CourseMenu {
     }
 
 
-    public void recordAdd() {
+    public void insertRecord() {
         String query = coursesController.addCourse(
                 this.tfCourseName.getText(),
                 this.tfTopic.getText(),
                 this.tfDescription.getText(),
                 this.drMenuBox.getValue().toString());
-        coursesController.runQuery(query);
-        this.showCursus();
+        coursesController.executeQuery(query);
+        this.showCourse();
     }
 
     public void setCellValueFromTableToTextField(){
-        cursusTable.setOnMouseClicked(e -> {
-            Course p1 = cursusTable.getItems().get(cursusTable.getSelectionModel().getSelectedIndex());
-            this.tfCourseName.setText(p1.getCourses());
+        courseTable.setOnMouseClicked(e -> {
+            Course p1 = courseTable.getItems().get(courseTable.getSelectionModel().getSelectedIndex());
+            this.tfCourseName.setText(p1.getCourse());
             this.tfTopic.setText(p1.getTopic());
             this.tfDescription.setText(p1.getDescription());
             this.drMenuBox.setValue(p1.getLevel().toString());
         });
     }
 
+    private void deleteRecord(){
+        //Controleer of er een record geselecteerd is.
+        if (courseTable.getSelectionModel().getSelectedItem() == null) {
+            Alert warningAlert = new Alert(Alert.AlertType.WARNING);
+            warningAlert.setContentText("Geen record geselecteerd");
+            warningAlert.show();}
+
+        // Ophalen en vervolgens verwijderen van record a.d.h.v muisselectie
+        else {
+            TablePosition pos = courseTable.getSelectionModel().getSelectedCells().get(0);
+            int row = pos.getRow();
+            Course course = courseTable.getItems().get(row);
+
+            String query = coursesController.makeDeleteQuery(course.getCourse());
+            this.coursesController.executeQuery(query);
+            this.showCourse();
+        }
+    }
+
     public void updateRecord() {
-        String query = coursesController.updateCourse(
-                this.tfCourseName.getText(),
-                this.tfTopic.getText(),
-                this.tfDescription.getText(),
-                this.drMenuBox.getValue().toString());
-        coursesController.runQuery(query);
-        this.showCursus();
+        if (courseTable.getSelectionModel().getSelectedItem() == null) {
+            Alert warningAlert = new Alert(Alert.AlertType.WARNING);
+            warningAlert.setContentText("Geen record geselecteerd");
+            warningAlert.show();}
+        else {
+            String query = coursesController.updateCourse(
+                    this.tfCourseName.getText(),
+                    this.tfTopic.getText(),
+                    this.tfDescription.getText(),
+                    this.drMenuBox.getValue().toString());
+            coursesController.executeQuery(query);
+            this.showCourse();
+        }
     }
 }

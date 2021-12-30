@@ -43,7 +43,7 @@ private Database db = new Database();
     }
 
     //Deze methoden voert een query uit.
-    public void runQuery(String query){
+    public void executeQuery(String query){
         Connection conn = db.getConnection();
         try{
             Statement st = conn.createStatement();
@@ -55,7 +55,7 @@ private Database db = new Database();
     }
 
     // Deze methode stelt een query samen om een cursist record toe te voegen.
-    public String insertQuery (String email, String naam, String gbDatum, String geslacht, String wPlaats, String adres, String land){
+    public String makeInsertQuery (String email, String naam, String gbDatum, String geslacht, String wPlaats, String adres, String land){
         String query = "INSERT INTO cursisten VALUES('" + email + "','"
                 + naam + "','" + gbDatum + "','"
                + geslacht + "','" + wPlaats + "','"
@@ -64,8 +64,20 @@ private Database db = new Database();
     }
 
     //Deze methode stelt een query samen om een cursist record te verwijderen
-    public String deleteQuery (String email){
+    public String makeDeleteQuery (String email){
         String query = "DELETE FROM cursisten WHERE email =" + "'" + email + "'";
+        return query;
+    }
+
+    // deze methode stelt een update query samen om een cursist te updaten
+    public String makeUpdateQuery(String email, String naam, String gbDatum, String geslacht, String wPlaats, String adres, String land) {
+        String query = "UPDATE cursisten SET naam ='" + naam +
+                "', geboorteDatum = '" + gbDatum +
+                "', geslacht = '" + geslacht +
+                "', woonplaats = '" + wPlaats +
+                "', adres = '" + adres +
+                "', land = '" + land +
+                "' WHERE email = '" + email +"'";
         return query;
     }
 }

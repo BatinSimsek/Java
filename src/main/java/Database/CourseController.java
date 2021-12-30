@@ -12,7 +12,7 @@ import java.sql.Statement;
 public class CourseController {
     private Database db = new Database();
 
-    public void runQuery(String query) {
+    public void executeQuery(String query) {
         Connection conn = db.getConnection();
         try{
             Statement st = conn.createStatement();
@@ -53,6 +53,11 @@ public class CourseController {
     public String updateCourse(String course, String topic, String description, String level) {
         String query = "UPDATE cursus SET course = '" + course + "', topic ='" + topic + "', description = '" + description + "', level = '" + level +
                 "' WHERE course = '" + course +"'";
+        return query;
+    }
+
+    public String makeDeleteQuery (String course){
+        String query = "DELETE FROM cursus WHERE course =" + "'" + course + "'";
         return query;
     }
 }
