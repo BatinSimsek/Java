@@ -20,6 +20,7 @@ import javafx.stage.Stage;
  */
 public class HoofdMenu extends Application {
     private CursistMenu cMenu = new CursistMenu();
+    private CourseMenu coursMenu = new CourseMenu();
 
     @Override
     public void start(Stage window) {
@@ -36,6 +37,7 @@ public class HoofdMenu extends Application {
         Button webcastBtn = new Button("Webcast");
         menu.getChildren().addAll(studentBtn, courseBtn, moduleBtn, webcastBtn);
         studentBtn.setOnAction((event) -> window.setScene(cMenu.maakGUI()));
+        courseBtn.setOnAction((event) -> window.setScene(coursMenu.makeCurist()));
         Scene scene = new Scene(layout);
         window.setScene(scene);
         window.show();
