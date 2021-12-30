@@ -1,24 +1,24 @@
 package Domain;
 
 public class Course {
-    private String courseName;
+    private String courses;
     private String topic;
     private String description;
     private String level;
 
-    public Course(String courseName, String topic, String description, String level){
-        this.courseName = courseName;
+    public Course(String courses, String topic, String description, String level){
+        this.courses = courses;
         this.topic = topic;
         this.description = description;
         this.level = level;
     }
 
-    public String getCourseName() {
-        return courseName;
+    public String getCourses() {
+        return courses;
     }
 
     public String getTopic() {
-        return topic;
+        return this.topic;
     }
 
     public String getDescription() {

@@ -1,18 +1,24 @@
 package GUI;
 
 import Database.CourseController;
-import Domain.Cursist;
+import Domain.Course;
 import Domain.Level;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 public class CourseMenu {
     private CourseController coursesController = new CourseController();
-    private TableView<Cursist> cursistTable = new TableView<>();
+    private TableView<Course> cursusTable = new TableView<>();
+    private TableColumn<Course, String> cursusNameTable = new TableColumn<>("Cursusnaam");
+    private TableColumn<Course, String> subjectTable = new TableColumn<>("Onderwerp");
+    private TableColumn<Course, String> descriptionTable = new TableColumn<>("Introductietekst");
+    private TableColumn<Course, String> levelTable = new TableColumn<>("Niveau");
     private TextField tfCourseName = new TextField();
     private TextField tfTopic = new TextField();
     private TextArea tfDescription = new TextArea();
@@ -24,6 +30,17 @@ public class CourseMenu {
     private Button btnInsert = new Button("Toevoegen");
     private Button btnDelete = new Button("Verwijderen");
     private Button btnUpdate = new Button("Update");
+
+
+    public void showCursus(){
+        ObservableList<Course> courseTable = coursesController.getCourse();
+        this.cursusTable.refresh();
+        this.cursusNameTable.setCellValueFactory(new PropertyValueFactory<>("courses"));
+        this.subjectTable.setCellValueFactory(new PropertyValueFactory<>("topic"));
+        this.descriptionTable.setCellValueFactory(new PropertyValueFactory<>("description"));
+        this.levelTable.setCellValueFactory(new PropertyValueFactory<>("level"));
+        this.cursusTable.setItems(courseTable);
+    }
 
     public Scene makeCurist() {
         BorderPane bp = new BorderPane();
@@ -38,12 +55,18 @@ public class CourseMenu {
         hbox.setSpacing(25);
         hbox.setPadding(new Insets(20, 0, 0 , 0));
 
+        this.btnInsert.setOnAction((event)->this.recordAdd());
+        this.btnUpdate.setOnAction((event)->this.updateRecord());
+        setCellValueFromTableToTextField();
+        this.cursusTable.getColumns().addAll(this.cursusNameTable, this.subjectTable, this.descriptionTable, this.levelTable);
+
+        bp.setRight(this.cursusTable);
+        bp.setLeft(gridPane);
+        this.showCursus();
+
         for (Level level : Level.values()) {
             drMenuBox.getItems().add(level);
         }
-
-
-        bp.setLeft(gridPane);
 
         gridPane.add(courseName, 0, 0);
         gridPane.add(tfCourseName, 1, 0);
@@ -57,5 +80,36 @@ public class CourseMenu {
 
         Scene scene = new Scene(bp);
         return scene;
+    }
+
+
+    public void recordAdd() {
+        String query = coursesController.addCourse(
+                this.tfCourseName.getText(),
+                this.tfTopic.getText(),
+                this.tfDescription.getText(),
+                this.drMenuBox.getValue().toString());
+        coursesController.runQuery(query);
+        this.showCursus();
+    }
+
+    public void setCellValueFromTableToTextField(){
+        cursusTable.setOnMouseClicked(e -> {
+            Course p1 = cursusTable.getItems().get(cursusTable.getSelectionModel().getSelectedIndex());
+            this.tfCourseName.setText(p1.getCourses());
+            this.tfTopic.setText(p1.getTopic());
+            this.tfDescription.setText(p1.getDescription());
+            this.drMenuBox.setValue(p1.getLevel().toString());
+        });
+    }
+
+    public void updateRecord() {
+        String query = coursesController.updateCourse(
+                this.tfCourseName.getText(),
+                this.tfTopic.getText(),
+                this.tfDescription.getText(),
+                this.drMenuBox.getValue().toString());
+        coursesController.runQuery(query);
+        this.showCursus();
     }
 }
