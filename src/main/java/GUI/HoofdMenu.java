@@ -32,15 +32,15 @@ public class HoofdMenu extends Application {
         menu.setPadding(new Insets(10));
         menu.setSpacing(25);
 
-        Button studentBtn = new Button("Studenten");
-        Button courseBtn = new Button("Course");
+        Button CursistBtn = new Button("Cursisten");
+        Button cursusBtn = new Button("Course");
         Button moduleBtn = new Button("Module");
         Button webcastBtn = new Button("Webcast");
         Button inschrijfBtn = new Button("Inschrijven");
-        menu.getChildren().addAll(studentBtn, inschrijfBtn, courseBtn, moduleBtn, webcastBtn);
+        menu.getChildren().addAll(CursistBtn, inschrijfBtn, cursusBtn, moduleBtn, webcastBtn);
 
-        studentBtn.setOnAction((event) -> window.setScene(cMenu.getView()));
-        courseBtn.setOnAction((event) -> window.setScene(courseMenu.getView()));
+        CursistBtn.setOnAction((event) -> window.setScene(cMenu.getView()));
+        cursusBtn.setOnAction((event) -> window.setScene(courseMenu.getView()));
         inschrijfBtn.setOnAction(actionEvent -> window.setScene(inschrijfMenu.getScene()));
 
 

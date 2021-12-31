@@ -32,10 +32,10 @@ public class CourseController {
             ResultSet rs = st.executeQuery(query);
             while (rs.next()){
                 Course course = new Course(
-                        rs.getString("cursusnaam"),
-                        rs.getString("onderwerp"),
-                        rs.getString("introductietekst"),
-                        rs.getString("niveau_aanduiding"));
+                        rs.getString("course"),
+                        rs.getString("topic"),
+                        rs.getString("description"),
+                        rs.getString("level"));
                 courseList.add(course);
             }
         } catch (SQLException e) {
