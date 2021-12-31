@@ -18,10 +18,10 @@ public class Inschrijven {
 
 
     public Inschrijven(LocalDateTime enroll) {
-        this.enroll = enroll;
-        this.certeficaatID = setCerteficaatID();
-        this.cursusNaam = course.getCourseName();
-        this.email = cursist.getEmail();
+//        this.enroll = enroll;
+//        this.certeficaatID = setCerteficaatID();
+//        this.cursusNaam = course.getCourseName();
+//        this.email = cursist.getEmail();
 
     }
 

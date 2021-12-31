@@ -36,7 +36,6 @@ public class InschrijfMenu {
 
         private Button resetBtn = new Button("Reset");
         private Button confirmBtn = new Button("Confirm");
-
     public Scene getScene() {
         BorderPane mainPane = new BorderPane();
         GridPane userInputPane = getContent();
@@ -77,7 +76,7 @@ public class InschrijfMenu {
 
     private void getEnrollButtonAction() {
         enrollBtn.setOnAction(actionEvent -> {
-            for (Cursist cursist : cursistController.getCursistLijst()){
+            for (Cursist cursist : cursistController.getCursistList()){
                 if (cursist.getEmail().equals(mailTextField.getText())) {
                     errorMail.setText("Email found!");
                     availableEmail = true;
