@@ -18,7 +18,7 @@ private Database db = new Database();
 // Onderstaande methode geeft een lijst met cursist objecten.
     public ObservableList<Cursist> getCursistList() {
         ObservableList<Cursist> CursistLijst = FXCollections.observableArrayList();
-        String query = "SELECT * FROM Cursisten";
+        String query = "SELECT * FROM cursisten";
 
         try {
             Connection con = db.getConnection();
@@ -28,12 +28,16 @@ private Database db = new Database();
             while (rs.next()) {
                 Cursist cursist = new Cursist(
                         rs.getString("email"),
-                        rs.getString("naam"),
-                        rs.getString("geboorteDatum"),
-                        rs.getString("geslacht"),
-                        rs.getString("woonPlaats"),
-                        rs.getString("adres"),
-                        rs.getString("land"));
+                        rs.getString("name"),
+                        rs.getInt("birthDay"),
+                        rs.getInt("birthMonth"),
+                        rs.getInt("birthYear"),
+                        rs.getString("sex"),
+                        rs.getString("city"),
+                        rs.getString("postalCode"),
+                        rs.getString("street"),
+                        rs.getInt("houseNr"),
+                        rs.getString("country"));
                 CursistLijst.add(cursist);
             }
         } catch (SQLException e) {
@@ -55,11 +59,15 @@ private Database db = new Database();
     }
 
     // Deze methode stelt een query samen om een cursist record toe te voegen.
-    public String makeInsertQuery (String email, String naam, String gbDatum, String geslacht, String wPlaats, String adres, String land){
+    public String makeInsertQuery (String email, String name, int bd, int bm, int by, String sex, String city,
+                                   String postalCode, String street, int houseNr, String country){
+
         String query = "INSERT INTO cursisten VALUES('" + email + "','"
-                + naam + "','" + gbDatum + "','"
-               + geslacht + "','" + wPlaats + "','"
-               + adres + "','" + land + "')";
+                + name + "'," + bd + ","
+               + bm + "," + by + ",'"
+               + sex + "','" + city +  "','"
+                + postalCode + "','" + street + "',"
+                + houseNr + ",'" + country + "')";
      return query;
     }
 
@@ -70,13 +78,18 @@ private Database db = new Database();
     }
 
     // deze methode stelt een update query samen om een cursist te updaten
-    public String makeUpdateQuery(String email, String naam, String gbDatum, String geslacht, String wPlaats, String adres, String land) {
-        String query = "UPDATE cursisten SET naam ='" + naam +
-                "', geboorteDatum = '" + gbDatum +
-                "', geslacht = '" + geslacht +
-                "', woonplaats = '" + wPlaats +
-                "', adres = '" + adres +
-                "', land = '" + land +
+    public String makeUpdateQuery(String email, String name, int bd, int bm, int by, String sex, String city,
+                                  String postalCode, String street, int houseNr, String country) {
+        String query = "UPDATE cursisten SET name ='" + name +
+                "', birthDay = " + bd +
+                ", birthMonth = " + bm +
+                ", birthYear = " + by +
+                ", sex = '" + sex +
+                "', city = '" + city +
+                "', postalCode = '" + postalCode +
+                "', street = '" + street +
+                "', houseNr = '" + houseNr +
+                "', country = '" + country +
                 "' WHERE email = '" + email +"'";
         return query;
     }

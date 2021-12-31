@@ -48,7 +48,7 @@ public class HoofdMenu extends Application {
 
 //        Buttons die terug naar main menu gaan.
         inschrijfMenu.backBtn.setOnAction(actionEvent -> window.setScene(scene));
-
+        cMenu.backBtn.setOnAction(actionEvent -> window.setScene(scene));
 
         window.setScene(scene);
         window.show();

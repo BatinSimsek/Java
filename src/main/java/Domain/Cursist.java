@@ -6,20 +6,28 @@ public class Cursist {
 
     private String email;
     private String name;
-    private String birthdate;
+    private int birthDay;
+    private int birthMonth;
+    private int birthYear;
     private String sex;
     private String city;
-    private String address;
+    private String postalCode;
+    private String street;
+    private int houseNr;
     private String country;
 
     //constructor
-    public Cursist(String email, String name, String birthdate, String sex, String city, String address, String country) {
+    public Cursist(String email, String name, int birthDay, int birthMonth, int birthYear, String sex, String city, String postalCode, String street, int houseNr, String country) {
         this.email = email;
         this.name = name;
-        this.birthdate = birthdate;
+        this.birthDay = birthDay;
+        this.birthMonth = birthMonth;
+        this.birthYear = birthYear;
+        this.postalCode = postalCode;
+        this.street = street;
+        this.houseNr = houseNr;
         this.sex = sex;
         this.city = city;
-        this.address = address;
         this.country = country;
     }
 
@@ -34,8 +42,16 @@ public class Cursist {
         return name;
     }
 
-    public String getBirthdate() {
-        return birthdate;
+    public int getBirthDay() {
+        return birthDay;
+    }
+
+    public int getBirthMonth() {
+        return birthMonth;
+    }
+
+    public int getBirthYear() {
+        return birthYear;
     }
 
     public String getSex() {
@@ -46,8 +62,16 @@ public class Cursist {
         return city;
     }
 
-    public String getAddress() {
-        return address;
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public int getHouseNr() {
+        return houseNr;
     }
 
     public String getCountry() {
@@ -58,27 +82,43 @@ public class Cursist {
         this.email = email;
     }
 
-    public void setName(String naam) {
-        this.name = naam;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setBirthdate(String geboorteDatum) {
-        this.birthdate = geboorteDatum;
+    public void setBirthDay(int birthDay) {
+        this.birthDay = birthDay;
     }
 
-    public void setSex(String geslacht) {
-        this.sex = geslacht;
+    public void setBirthMonth(int birthMonth) {
+        this.birthMonth = birthMonth;
     }
 
-    public void setCity(String woonPlaats) {
-        this.city = woonPlaats;
+    public void setBirthYear(int birthYear) {
+        this.birthYear = birthYear;
     }
 
-    public void setAddress(String adres) {
-        this.address = adres;
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
-    public void setCountry(String land) {
-        this.country = land;
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public void setHouseNr(int houseNr) {
+        this.houseNr = houseNr;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }
