@@ -2,6 +2,7 @@ package GUI;
 
 import Database.CourseController;
 import Database.CursistController;
+import Domain.Course;
 import Domain.Cursist;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -27,7 +28,7 @@ public class InschrijfMenu {
         CourseController courseController = new CourseController();
 
         private boolean availableEmail = false;
-        private boolean selectectedCourse = false;
+        private boolean selectedCourse = false;
 
         private Label titleCourse = new Label("You have signed up for: ");
         private Label nameCourseLabel = new Label("");
@@ -36,21 +37,46 @@ public class InschrijfMenu {
 
         private Button resetBtn = new Button("Reset");
         private Button confirmBtn = new Button("Confirm");
+
+        private String nameCourse = "";
+        private String difficulty = "";
+        private String topic = "";
+
+
     public Scene getScene() {
         BorderPane mainPane = new BorderPane();
         GridPane userInputPane = getContent();
         GridPane selectedCourseGrid = getCourseInfoPane();
 
-
-        getEnrollButtonAction();
-
         mainPane.setCenter(userInputPane);
-        mainPane.setBottom(selectedCourseGrid);
+        getInfoAfterEnrollPane(mainPane, selectedCourseGrid);
         mainPane.snapSpaceY(10);
         Scene scene = new Scene(mainPane,600,600);
         return scene;
     }
 
+    private void getInfoAfterEnrollPane(BorderPane mainPane, GridPane selectedCourseGrid) {
+        enrollBtn.setOnAction(actionEvent -> {
+            CheckIfMailAvailable();
+            ChooseAvailableCourse();
+
+            if (availableEmail && selectedCourse) {
+                mainPane.setBottom(selectedCourseGrid);
+
+                for (Course course : courseController.getCourse()) {
+                    if (course.getCourse().equals(comboBox.getValue())) {
+                        nameCourseLabel.setText(course.getCourse());
+                        difficultyLabel.setText(course.getLevel());
+                        topicLabel.setText(course.getTopic());
+                        break;
+                    }
+                }
+            }
+        });
+
+
+
+    }
 
 
     private GridPane getCourseInfoPane() {
@@ -65,6 +91,17 @@ public class InschrijfMenu {
         selectedCourseGrid.add(new Label("Difficulty: "),0,3);
         selectedCourseGrid.add(difficultyLabel,1,3);
         selectedCourseGrid.add(resetBtn,1,4);
+        resetBtn.setOnAction(actionEvent -> {
+            availableEmail = false;
+            selectedCourse = false;
+            mailTextField.setText("");
+            errorMail.setText("");
+            errorCourse.setText("");
+            nameCourseLabel.setText("");
+            difficultyLabel.setText("");
+            topicLabel.setText("");
+
+        });
         selectedCourseGrid.add(confirmBtn,2,4);
 
 
@@ -74,23 +111,25 @@ public class InschrijfMenu {
         return selectedCourseGrid;
     }
 
-    private void getEnrollButtonAction() {
-        enrollBtn.setOnAction(actionEvent -> {
-            for (Cursist cursist : cursistController.getCursistList()){
-                if (cursist.getEmail().equals(mailTextField.getText())) {
-                    errorMail.setText("Email found!");
-                    availableEmail = true;
-                    break;
-                } else { errorMail.setText("Email not found, Please sign up first"); }
-            }
 
-            if (comboBox.getValue() == null) {
-                errorCourse.setText("Please select a available course.");
-            } else {
-                selectectedCourse = true;
-                errorCourse.setText("Course found!");
-            }
-        });
+
+    private void ChooseAvailableCourse() {
+        if (comboBox.getValue() == null) {
+            errorCourse.setText("Please select a available course.");
+        } else {
+            selectedCourse = true;
+            errorCourse.setText("Course found!");
+        }
+    }
+
+    private void CheckIfMailAvailable() {
+        for (Cursist cursist : cursistController.getCursistList()){
+            if (cursist.getEmail().equals(mailTextField.getText())) {
+                errorMail.setText("Email found!");
+                availableEmail = true;
+                break;
+            } else { errorMail.setText("Email not found, Please sign up first"); }
+        }
     }
 
 
@@ -107,8 +146,10 @@ public class InschrijfMenu {
         gridPane.add(comboBox,1,2);
         gridPane.add(errorCourse,2,2);
         comboBox.setPrefWidth(150);
-//        comboBox.setItems(CourseController.getObservableList);
-        comboBox.getItems().add("test");
+        comboBox.getItems().clear();
+        for (Course courses : courseController.getCourse()) {
+            comboBox.getItems().add(courses.getCourse());
+        }
 
         gridPane.add(backBtn,0,3);
         gridPane.add(enrollBtn,1,3);
