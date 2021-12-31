@@ -8,21 +8,14 @@ public class Inschrijven {
 
     private Cursist cursist;
     private Course course;
-
     private LocalDateTime enroll;
     private int certeficaatID;
-    private String cursusNaam;
-    private String email;
 
-//    private CursistController cursistController;
-
-
-    public Inschrijven(LocalDateTime enroll) {
-//        this.enroll = enroll;
-//        this.certeficaatID = setCerteficaatID();
-//        this.cursusNaam = course.getCourseName();
-//        this.email = cursist.getEmail();
-
+    public Inschrijven(Cursist cursist, Course course, LocalDateTime enroll) {
+        this.cursist = cursist;
+        this.course = course;
+        this.enroll = enroll;
+        this.certeficaatID = setCerteficaatID();
     }
 
 
@@ -32,5 +25,35 @@ public class Inschrijven {
     }
 
 
+    public Cursist getCursist() {
+        return cursist;
+    }
 
+    public void setCursist(Cursist cursist) {
+        this.cursist = cursist;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public LocalDateTime getEnroll() {
+        return enroll;
+    }
+
+    public void setEnroll(LocalDateTime enroll) {
+        this.enroll = enroll;
+    }
+
+    public int getCerteficaatID() {
+        return certeficaatID;
+    }
+
+    public void setCerteficaatID(int certeficaatID) {
+        this.certeficaatID = certeficaatID;
+    }
 }
