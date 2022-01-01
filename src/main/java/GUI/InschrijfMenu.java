@@ -2,6 +2,7 @@ package GUI;
 
 import Database.CourseController;
 import Database.CursistController;
+import Database.EnrollController;
 import Domain.Course;
 import Domain.Cursist;
 import javafx.geometry.Insets;
@@ -10,6 +11,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
 
 public class InschrijfMenu {
         public Button backBtn = new Button("Terug");
@@ -26,6 +31,8 @@ public class InschrijfMenu {
 
         CursistController cursistController = new CursistController();
         CourseController courseController = new CourseController();
+        EnrollController enrollController = new EnrollController();
+
 
         private boolean availableEmail = false;
         private boolean selectedCourse = false;
@@ -41,7 +48,6 @@ public class InschrijfMenu {
         private String nameCourse = "";
         private String difficulty = "";
         private String topic = "";
-
 
     public Scene getScene() {
         BorderPane mainPane = new BorderPane();
@@ -73,11 +79,7 @@ public class InschrijfMenu {
                 }
             }
         });
-
-
-
     }
-
 
     private GridPane getCourseInfoPane() {
         GridPane selectedCourseGrid = new GridPane();
@@ -92,17 +94,13 @@ public class InschrijfMenu {
         selectedCourseGrid.add(difficultyLabel,1,3);
         selectedCourseGrid.add(resetBtn,1,4);
         resetBtn.setOnAction(actionEvent -> {
-            availableEmail = false;
-            selectedCourse = false;
-            mailTextField.setText("");
-            errorMail.setText("");
-            errorCourse.setText("");
-            nameCourseLabel.setText("");
-            difficultyLabel.setText("");
-            topicLabel.setText("");
-
+            resetAllInput();
         });
         selectedCourseGrid.add(confirmBtn,2,4);
+        confirmBtn.setOnAction(actionEvent -> {
+            addEnrollmentToDataBase();
+            resetAllInput();
+        });
 
 
         selectedCourseGrid.setHgap(30);
@@ -111,7 +109,34 @@ public class InschrijfMenu {
         return selectedCourseGrid;
     }
 
+    private void resetAllInput() {
+        availableEmail = false;
+        selectedCourse = false;
+        mailTextField.setText("");
+        errorMail.setText("");
+        errorCourse.setText("");
+        nameCourseLabel.setText("");
+        difficultyLabel.setText("");
+        topicLabel.setText("");
+    }
 
+    private void addEnrollmentToDataBase() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        String[] newDate = formatter.format(date).split("/");
+        enrollController.makeInsertQuery(
+                Integer.parseInt(newDate[0]),
+                Integer.parseInt(newDate[1]),
+                Integer.parseInt(newDate[2]),
+                getRandomID(),
+                nameCourseLabel.getText(),
+                mailTextField.getText());
+    }
+
+    public int getRandomID() {
+        Random random = new Random();
+        return random.nextInt(9999);
+    }
 
     private void ChooseAvailableCourse() {
         if (comboBox.getValue() == null) {
@@ -131,7 +156,6 @@ public class InschrijfMenu {
             } else { errorMail.setText("Email niet gevonden in de database"); }
         }
     }
-
 
     private GridPane getContent() {
         GridPane gridPane = new GridPane();

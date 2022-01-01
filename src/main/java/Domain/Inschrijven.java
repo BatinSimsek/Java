@@ -2,7 +2,7 @@ package Domain;
 
 
 import java.time.LocalDateTime;
-import java.util.Random;
+
 
 public class Inschrijven {
 
@@ -15,13 +15,7 @@ public class Inschrijven {
         this.cursist = cursist;
         this.course = course;
         this.enroll = enroll;
-        this.certeficaatID = setCerteficaatID();
-    }
 
-
-    public int setCerteficaatID() {
-        Random random = new Random();
-        return random.nextInt(9999);
     }
 
 
@@ -53,7 +47,5 @@ public class Inschrijven {
         return certeficaatID;
     }
 
-    public void setCerteficaatID(int certeficaatID) {
-        this.certeficaatID = certeficaatID;
-    }
+
 }
