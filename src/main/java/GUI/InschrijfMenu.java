@@ -12,15 +12,15 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 
 public class InschrijfMenu {
-        public Button backBtn = new Button("Back");
-        private final Button enrollBtn = new Button("Enroll now");
-        private final Label introText = new Label("Enroll here!");
+        public Button backBtn = new Button("Terug");
+        private final Button enrollBtn = new Button("Inschrijven");
+        private final Label introText = new Label("Schrijf je in!");
 
-        private final Label mailText = new Label("* Your mail: ");
+        private final Label mailText = new Label("* email: ");
         private final TextField mailTextField = new TextField();
         private final Label errorMail = new Label("");
 
-        private Label courseName = new Label("* Choose Course: ");
+        private Label courseName = new Label("* cursus: ");
         private ComboBox comboBox = new ComboBox();
         private final Label errorCourse = new Label("");
 
@@ -30,7 +30,7 @@ public class InschrijfMenu {
         private boolean availableEmail = false;
         private boolean selectedCourse = false;
 
-        private Label titleCourse = new Label("You have signed up for: ");
+        private Label titleCourse = new Label("Je hebt je ingeschreven voor: ");
         private Label nameCourseLabel = new Label("");
         private Label difficultyLabel = new Label("");
         private Label topicLabel = new Label("");
@@ -84,11 +84,11 @@ public class InschrijfMenu {
         selectedCourseGrid.add(titleCourse,0,0);
         titleCourse.setFont(Font.font("Verdana",15));
 
-        selectedCourseGrid.add(new Label("Name course: "),0,1);
+        selectedCourseGrid.add(new Label("Naam cursus: "),0,1);
         selectedCourseGrid.add(nameCourseLabel,1,1);
-        selectedCourseGrid.add(new Label("Topic: "),0,2);
+        selectedCourseGrid.add(new Label("Onderwerp: "),0,2);
         selectedCourseGrid.add(topicLabel,1,2);
-        selectedCourseGrid.add(new Label("Difficulty: "),0,3);
+        selectedCourseGrid.add(new Label("Moeilijkheidsgraad: "),0,3);
         selectedCourseGrid.add(difficultyLabel,1,3);
         selectedCourseGrid.add(resetBtn,1,4);
         resetBtn.setOnAction(actionEvent -> {
@@ -115,20 +115,20 @@ public class InschrijfMenu {
 
     private void ChooseAvailableCourse() {
         if (comboBox.getValue() == null) {
-            errorCourse.setText("Please select a available course.");
+            errorCourse.setText("Kies een geldige cursus.");
         } else {
             selectedCourse = true;
-            errorCourse.setText("Course found!");
+            errorCourse.setText("cursus gevonden!");
         }
     }
 
     private void CheckIfMailAvailable() {
         for (Cursist cursist : cursistController.getCursistList()){
             if (cursist.getEmail().equals(mailTextField.getText())) {
-                errorMail.setText("Email found!");
+                errorMail.setText("Email gevonden!");
                 availableEmail = true;
                 break;
-            } else { errorMail.setText("Email not found, Please sign up first"); }
+            } else { errorMail.setText("Email niet gevonden in de database"); }
         }
     }
 
