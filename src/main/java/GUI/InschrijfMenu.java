@@ -38,6 +38,7 @@ public class InschrijfMenu {
         private boolean selectedCourse = false;
 
         private Label titleCourse = new Label("Je hebt je ingeschreven voor: ");
+        private Label getGivenMail = new Label("");
         private Label nameCourseLabel = new Label("");
         private Label difficultyLabel = new Label("");
         private Label topicLabel = new Label("");
@@ -57,7 +58,7 @@ public class InschrijfMenu {
         mainPane.setCenter(userInputPane);
         getInfoAfterEnrollPane(mainPane, selectedCourseGrid);
         mainPane.snapSpaceY(10);
-        Scene scene = new Scene(mainPane,600,600);
+        Scene scene = new Scene(mainPane,600,630);
         return scene;
     }
 
@@ -74,6 +75,9 @@ public class InschrijfMenu {
                         nameCourseLabel.setText(course.getCourse());
                         difficultyLabel.setText(course.getLevel());
                         topicLabel.setText(course.getTopic());
+                        getGivenMail.setText(mailTextField.getText());
+                        availableEmail = false;
+                        selectedCourse = false;
                         break;
                     }
                 }
@@ -86,22 +90,26 @@ public class InschrijfMenu {
         selectedCourseGrid.add(titleCourse,0,0);
         titleCourse.setFont(Font.font("Verdana",15));
 
+
         selectedCourseGrid.add(new Label("Naam cursus: "),0,1);
         selectedCourseGrid.add(nameCourseLabel,1,1);
         selectedCourseGrid.add(new Label("Onderwerp: "),0,2);
         selectedCourseGrid.add(topicLabel,1,2);
         selectedCourseGrid.add(new Label("Moeilijkheidsgraad: "),0,3);
         selectedCourseGrid.add(difficultyLabel,1,3);
-        selectedCourseGrid.add(resetBtn,1,4);
+        selectedCourseGrid.add(new Label("Opgegeven mail: "),0,4);
+        selectedCourseGrid.add(getGivenMail,1,4);
+
+        selectedCourseGrid.add(resetBtn,1,5);
+        selectedCourseGrid.add(confirmBtn,2,5);
+
         resetBtn.setOnAction(actionEvent -> {
             resetAllInput();
         });
-        selectedCourseGrid.add(confirmBtn,2,4);
         confirmBtn.setOnAction(actionEvent -> {
             addEnrollmentToDataBase();
             resetAllInput();
         });
-
 
         selectedCourseGrid.setHgap(30);
         selectedCourseGrid.setVgap(30);
@@ -118,6 +126,7 @@ public class InschrijfMenu {
         nameCourseLabel.setText("");
         difficultyLabel.setText("");
         topicLabel.setText("");
+        getGivenMail.setText("");
     }
 
     private void addEnrollmentToDataBase() {
