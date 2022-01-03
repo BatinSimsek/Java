@@ -148,7 +148,7 @@ public class InschrijfMenu {
     }
 
     private void CheckIfMailAvailable() {
-        for (Student student : cursistController.getCursistList()){
+        for (Student student : cursistController.getStudentList()){
             if (student.getEmail().equals(mailTextField.getText())) {
                 errorMail.setText("Email gevonden!");
                 availableEmail = true;

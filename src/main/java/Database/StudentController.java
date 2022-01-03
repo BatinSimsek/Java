@@ -15,7 +15,7 @@ private Database db = new Database();
 // Onderstaande methode geeft een lijst met cursist objecten.
     public ObservableList<Student> getStudentList() {
         ObservableList<Student> studentList = FXCollections.observableArrayList();
-        String query = "SELECT * FROM cursisten";
+        String query = "SELECT * FROM student";
 
         try {
             Connection con = db.getConnection();
@@ -26,7 +26,7 @@ private Database db = new Database();
                 Student student = new Student(
                         rs.getString("email"),
                         rs.getString("name"),
-                        rs.getDate("birthDate"),
+                        rs.getDate("birthDate").toLocalDate(),
                         rs.getString("sex"),
                         rs.getString("city"),
                         rs.getString("postalCode"),
@@ -41,25 +41,13 @@ private Database db = new Database();
         return studentList;
     }
 
-    //Deze methoden voert een query uit.
-    public void executeQuery(String query){
-        Connection conn = db.getConnection();
-        try{
-            Statement st = conn.createStatement();
-            st.executeUpdate(query);
-        }
-        catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
 
     // Deze methode stelt een query samen om een cursist record toe te voegen.
     public String makeInsertQuery (String email, String name, int bd, int bm, int by, String sex, String city,
                                    String postalCode, String street, int houseNr, String country){
 
-        String query = "INSERT INTO cursisten VALUES('" + email + "','"
-                + name + "'," + bd + ","
-               + bm + "," + by + ",'"
+        String query = "INSERT INTO student VALUES('" + email + "','"
+                + name + "','" + by + "-" + bm + "-" + bd + "','"
                + sex + "','" + city +  "','"
                 + postalCode + "','" + street + "',"
                 + houseNr + ",'" + country + "')";
@@ -68,18 +56,16 @@ private Database db = new Database();
 
     //Deze methode stelt een query samen om een cursist record te verwijderen
     public String makeDeleteQuery (String email){
-        String query = "DELETE FROM cursisten WHERE email =" + "'" + email + "'";
+        String query = "DELETE FROM student WHERE email =" + "'" + email + "'";
         return query;
     }
 
     // deze methode stelt een update query samen om een cursist te updaten
     public String makeUpdateQuery(String email, String name, int bd, int bm, int by, String sex, String city,
                                   String postalCode, String street, int houseNr, String country) {
-        String query = "UPDATE cursisten SET name ='" + name +
-                "', birthDay = " + bd +
-                ", birthMonth = " + bm +
-                ", birthYear = " + by +
-                ", sex = '" + sex +
+        String query = "UPDATE student SET name ='" + name +
+                "', birthDate = '" + by + "-" + bm + "-" + bd + "'," +
+                "sex = '" + sex +
                 "', city = '" + city +
                 "', postalCode = '" + postalCode +
                 "', street = '" + street +

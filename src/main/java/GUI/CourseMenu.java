@@ -1,6 +1,7 @@
 package GUI;
 
 import Database.CourseController;
+import Database.Database;
 import Domain.Course;
 import Domain.Level;
 import javafx.collections.ObservableList;
@@ -13,6 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 public class CourseMenu {
+    private Database db = new Database();
     private CourseController coursesController = new CourseController();
     private TableView<Course> courseTable = new TableView<>();
     private TableColumn<Course, String> cursusNameTable = new TableColumn<>("Cursusnaam");
@@ -30,6 +32,7 @@ public class CourseMenu {
     private Button btnInsert = new Button("Toevoegen");
     private Button btnDelete = new Button("Verwijderen");
     private Button btnUpdate = new Button("Update");
+    private Button backButton = new Button("Terug");
 
 
     public void showCourse(){
@@ -91,7 +94,7 @@ public class CourseMenu {
                 this.tfTopic.getText(),
                 this.tfDescription.getText(),
                 this.drMenuBox.getValue().toString());
-        coursesController.executeQuery(query);
+        db.executeQuery(query);
         this.showCourse();
     }
 
@@ -119,7 +122,7 @@ public class CourseMenu {
             Course course = courseTable.getItems().get(row);
 
             String query = coursesController.makeDeleteQuery(course.getCourse());
-            this.coursesController.executeQuery(query);
+            this.db.executeQuery(query);
             this.showCourse();
         }
     }
@@ -135,7 +138,7 @@ public class CourseMenu {
                     this.tfTopic.getText(),
                     this.tfDescription.getText(),
                     this.drMenuBox.getValue().toString());
-            coursesController.executeQuery(query);
+            db.executeQuery(query);
             this.showCourse();
         }
     }

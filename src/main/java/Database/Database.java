@@ -17,6 +17,17 @@ public class Database {
         }
     }
 
+    //Deze methoden voert een query uit.
+    public void executeQuery(String query){
+        Connection conn = this.getConnection();
+        try{
+            Statement st = conn.createStatement();
+            st.executeUpdate(query);
+        }
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 
 
 
