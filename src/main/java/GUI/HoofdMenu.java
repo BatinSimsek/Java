@@ -19,7 +19,7 @@ import javafx.stage.Stage;
  * @author quinc
  */
 public class HoofdMenu extends Application {
-    private CursistMenu cMenu = new CursistMenu();
+    private StudentMenu cMenu = new StudentMenu();
     private CourseMenu courseMenu = new CourseMenu();
     private InschrijfMenu inschrijfMenu = new InschrijfMenu();
 

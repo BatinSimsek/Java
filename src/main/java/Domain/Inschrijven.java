@@ -6,25 +6,25 @@ import java.time.LocalDateTime;
 
 public class Inschrijven {
 
-    private Cursist cursist;
+    private Student student;
     private Course course;
     private LocalDateTime enroll;
     private int certeficaatID;
 
-    public Inschrijven(Cursist cursist, Course course, LocalDateTime enroll) {
-        this.cursist = cursist;
+    public Inschrijven(Student student, Course course, LocalDateTime enroll) {
+        this.student = student;
         this.course = course;
         this.enroll = enroll;
 
     }
 
 
-    public Cursist getCursist() {
-        return cursist;
+    public Student getCursist() {
+        return student;
     }
 
-    public void setCursist(Cursist cursist) {
-        this.cursist = cursist;
+    public void setCursist(Student student) {
+        this.student = student;
     }
 
     public Course getCourse() {

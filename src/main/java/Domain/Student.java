@@ -1,14 +1,13 @@
 package Domain;
 
+import java.time.LocalDate;
 import java.util.Date;
 
-public class Cursist {
+public class Student {
 
     private String email;
     private String name;
-    private int birthDay;
-    private int birthMonth;
-    private int birthYear;
+    private LocalDate birthDate;
     private String sex;
     private String city;
     private String postalCode;
@@ -17,12 +16,10 @@ public class Cursist {
     private String country;
 
     //constructor
-    public Cursist(String email, String name, int birthDay, int birthMonth, int birthYear, String sex, String city, String postalCode, String street, int houseNr, String country) {
+    public Student(String email, String name, LocalDate birthDate, String sex, String city, String postalCode, String street, int houseNr, String country) {
         this.email = email;
         this.name = name;
-        this.birthDay = birthDay;
-        this.birthMonth = birthMonth;
-        this.birthYear = birthYear;
+        this.birthDate = birthDate;
         this.postalCode = postalCode;
         this.street = street;
         this.houseNr = houseNr;
@@ -42,16 +39,21 @@ public class Cursist {
         return name;
     }
 
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
     public int getBirthDay() {
-        return birthDay;
+        return this.birthDate.getDayOfMonth();
     }
 
     public int getBirthMonth() {
-        return birthMonth;
+        return this.birthDate.getMonthValue();
     }
 
     public int getBirthYear() {
-        return birthYear;
+        return this.birthDate.getYear();
+
     }
 
     public String getSex() {
@@ -84,18 +86,6 @@ public class Cursist {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setBirthDay(int birthDay) {
-        this.birthDay = birthDay;
-    }
-
-    public void setBirthMonth(int birthMonth) {
-        this.birthMonth = birthMonth;
-    }
-
-    public void setBirthYear(int birthYear) {
-        this.birthYear = birthYear;
     }
 
     public void setSex(String sex) {

@@ -1,10 +1,10 @@
 package GUI;
 
 import Database.CourseController;
-import Database.CursistController;
+import Database.StudentController;
 import Database.EnrollController;
 import Domain.Course;
-import Domain.Cursist;
+import Domain.Student;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -29,7 +29,7 @@ public class InschrijfMenu {
         private ComboBox comboBox = new ComboBox();
         private final Label errorCourse = new Label("");
 
-        CursistController cursistController = new CursistController();
+        StudentController cursistController = new StudentController();
         CourseController courseController = new CourseController();
         EnrollController enrollController = new EnrollController();
 
@@ -148,8 +148,8 @@ public class InschrijfMenu {
     }
 
     private void CheckIfMailAvailable() {
-        for (Cursist cursist : cursistController.getCursistList()){
-            if (cursist.getEmail().equals(mailTextField.getText())) {
+        for (Student student : cursistController.getCursistList()){
+            if (student.getEmail().equals(mailTextField.getText())) {
                 errorMail.setText("Email gevonden!");
                 availableEmail = true;
                 break;

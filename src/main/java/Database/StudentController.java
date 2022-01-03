@@ -1,23 +1,20 @@
 package Database;
 
-import Domain.Cursist;
+import Domain.Student;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
-public class CursistController {
+public class StudentController {
 private Database db = new Database();
 
 
 
 // Onderstaande methode geeft een lijst met cursist objecten.
-    public ObservableList<Cursist> getCursistList() {
-        ObservableList<Cursist> CursistLijst = FXCollections.observableArrayList();
+    public ObservableList<Student> getStudentList() {
+        ObservableList<Student> studentList = FXCollections.observableArrayList();
         String query = "SELECT * FROM cursisten";
 
         try {
@@ -26,24 +23,22 @@ private Database db = new Database();
             ResultSet rs = st.executeQuery(query);
 
             while (rs.next()) {
-                Cursist cursist = new Cursist(
+                Student student = new Student(
                         rs.getString("email"),
                         rs.getString("name"),
-                        rs.getInt("birthDay"),
-                        rs.getInt("birthMonth"),
-                        rs.getInt("birthYear"),
+                        rs.getDate("birthDate"),
                         rs.getString("sex"),
                         rs.getString("city"),
                         rs.getString("postalCode"),
                         rs.getString("street"),
                         rs.getInt("houseNr"),
                         rs.getString("country"));
-                CursistLijst.add(cursist);
+                studentList.add(student);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return CursistLijst;
+        return studentList;
     }
 
     //Deze methoden voert een query uit.
