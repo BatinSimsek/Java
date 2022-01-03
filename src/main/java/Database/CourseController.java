@@ -23,7 +23,7 @@ public class CourseController {
             ResultSet rs = st.executeQuery(query);
             while (rs.next()){
                 Course course = new Course(
-                        rs.getString("course"),
+                        rs.getString("courseName"),
                         rs.getString("topic"),
                         rs.getString("description"),
                         rs.getString("level"));

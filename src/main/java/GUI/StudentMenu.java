@@ -63,7 +63,7 @@ public class StudentMenu {
         ObservableList<Student> studentList = sController.getStudentList();
         this.emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
         this.nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        this.sexCol.setCellValueFactory(new PropertyValueFactory<>("sex"));
+        this.sexCol.setCellValueFactory(new PropertyValueFactory<>("gender"));
         this.bdCol.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
         this.cityCol.setCellValueFactory(new PropertyValueFactory<>("city"));
         this.pcCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
@@ -202,7 +202,7 @@ public class StudentMenu {
             this.tfBirthDay.setText(String.valueOf(student.getBirthDay()));
             this.tfBirthMonth.setText(String.valueOf(student.getBirthMonth()));
             this.tfBirthYear.setText(String.valueOf(student.getBirthYear()));
-            this.sexMenuBox.setValue(student.getSex());
+            this.sexMenuBox.setValue(student.getGender());
             this.tfCity.setText(student.getCity());
             this.tfPostalCode.setText(student.getPostalCode());
             this.tfStreet.setText(student.getStreet());
