@@ -2,7 +2,6 @@ package GUI;
 
 import Database.CourseController;
 import Domain.Course;
-import Domain.Cursist;
 import Domain.Level;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;

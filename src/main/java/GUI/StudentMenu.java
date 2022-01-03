@@ -1,9 +1,8 @@
 package GUI;
 
 import Database.Database;
-import Domain.Course;
-import Domain.Cursist;
-import Database.CursistController;
+import Domain.Student;
+import Database.StudentController;
 
 
 import Domain.Geslacht;
@@ -16,24 +15,22 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
+import java.time.LocalDate;
+import java.util.Date;
 
-import java.sql.*;
-
-public class CursistMenu {
+public class StudentMenu {
     private Database db = new Database();
-    private CursistController cController = new CursistController();
-    private TableView<Cursist> cursistTable = new TableView<>();
-    private TableColumn<Cursist, String> emailCol = new TableColumn<>("Email");
-    private TableColumn<Cursist, String> nameCol = new TableColumn<>("Naam");
-    private TableColumn<Cursist, Integer> bdCol = new TableColumn<>("Geboortedag");
-    private TableColumn<Cursist, Integer> bmCol = new TableColumn<>("Geboortemaand");
-    private TableColumn<Cursist, Integer> byCol = new TableColumn<>("Geboortejaar");
-    private TableColumn<Cursist, String> sexCol = new TableColumn<>("Geslacht");
-    private TableColumn<Cursist, String> cityCol = new TableColumn<>("Woonplaats");
-    private TableColumn<Cursist, String> pcCol = new TableColumn<>("Postcode");
-    private TableColumn<Cursist, String> streetCol = new TableColumn<>("Straatnaam");
-    private TableColumn<Cursist, Integer> houseNrCol = new TableColumn<>("Huisnummer");
-    private TableColumn<Cursist, String> countryCol = new TableColumn<>("Land");
+    private StudentController sController = new StudentController();
+    private TableView<Student> studentTable = new TableView<>();
+    private TableColumn<Student, String> emailCol = new TableColumn<>("Email");
+    private TableColumn<Student, String> nameCol = new TableColumn<>("Naam");
+    private TableColumn<Student, LocalDate> bdCol = new TableColumn<>("Geboortedatum");
+    private TableColumn<Student, String> sexCol = new TableColumn<>("Geslacht");
+    private TableColumn<Student, String> cityCol = new TableColumn<>("Woonplaats");
+    private TableColumn<Student, String> pcCol = new TableColumn<>("Postcode");
+    private TableColumn<Student, String> streetCol = new TableColumn<>("Straatnaam");
+    private TableColumn<Student, Integer> houseNrCol = new TableColumn<>("Huisnummer");
+    private TableColumn<Student, String> countryCol = new TableColumn<>("Land");
     private Label emailLabel = new Label("Email: ");
     private Label nameLabel = new Label("Naam: ");
     private Label birthDateLabel = new Label("GeboorteDatum d/m/j: ");
@@ -63,19 +60,17 @@ public class CursistMenu {
 
     // onderstaande methode zet cursisten data in de cellen van de tabel.
     public void showCursists(){
-        ObservableList<Cursist> cursistenList = cController.getCursistList();
+        ObservableList<Student> studentList = sController.studentList();
         this.emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
         this.nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         this.sexCol.setCellValueFactory(new PropertyValueFactory<>("sex"));
-        this.bdCol.setCellValueFactory(new PropertyValueFactory<>("birthDay"));
-        this.bmCol.setCellValueFactory(new PropertyValueFactory<>("birthMonth"));
-        this.byCol.setCellValueFactory(new PropertyValueFactory<>("birthYear"));
+        this.bdCol.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
         this.cityCol.setCellValueFactory(new PropertyValueFactory<>("city"));
         this.pcCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
         this.streetCol.setCellValueFactory(new PropertyValueFactory<>("street"));
         this.houseNrCol.setCellValueFactory(new PropertyValueFactory<>("houseNr"));
         this.countryCol.setCellValueFactory(new PropertyValueFactory<>("country"));
-        this.cursistTable.setItems(cursistenList);
+        this.studentTable.setItems(studentList);
     }
 
     // methode maakt GUI voor cursisten
@@ -100,10 +95,10 @@ public class CursistMenu {
         this.btnDelete.setOnAction((event)->this.deleteRecord());
         this.btnUpdate.setOnAction((event)->this.updateRecord());
         this.setCellValueFromTableToTextField();
-        this.cursistTable.getColumns().addAll(this.emailCol, this.nameCol, this.bdCol, this.bmCol, this.byCol,
+        this.studentTable.getColumns().addAll(this.emailCol, this.nameCol, this.bdCol,
                 this.sexCol, this.cityCol, this.pcCol, this.streetCol, this.houseNrCol, this.countryCol);
 
-        bp.setRight(this.cursistTable);
+        bp.setRight(this.studentTable);
         bp.setLeft(gridPane);
         this.showCursists();
 
@@ -139,7 +134,7 @@ public class CursistMenu {
 
     //De methoden die toevoegButton moet uitvoeren
     private void insertRecord(){
-        String query = cController.makeInsertQuery(
+        String query = sController.makeInsertQuery(
                 this.tfEmail.getText(),
                 this.tfName.getText(),
                 Integer.parseInt(this.tfBirthDay.getText()),
@@ -151,36 +146,36 @@ public class CursistMenu {
                 this.tfStreet.getText(),
                 Integer.parseInt(this.tfhouseNr.getText()),
                 this.tfCountry.getText());
-        cController.executeQuery(query);
+        sController.executeQuery(query);
         this.showCursists();
     }
 
     private void deleteRecord(){
         //Controleer of er een record geselecteerd is.
-        if (cursistTable.getSelectionModel().getSelectedItem() == null) {
+        if (studentTable.getSelectionModel().getSelectedItem() == null) {
             Alert warningAlert = new Alert(Alert.AlertType.WARNING);
             warningAlert.setContentText("Geen record geselecteerd");
             warningAlert.show();}
 
         // Ophalen en vervolgens verwijderen van record a.d.h.v muisselectie
         else {
-            TablePosition pos = cursistTable.getSelectionModel().getSelectedCells().get(0);
+            TablePosition pos = studentTable.getSelectionModel().getSelectedCells().get(0);
             int row = pos.getRow();
-            Cursist cursist = cursistTable.getItems().get(row);
+            Student student = studentTable.getItems().get(row);
 
-            String query = cController.makeDeleteQuery(cursist.getEmail());
-            this.cController.executeQuery(query);
+            String query = sController.makeDeleteQuery(student.getEmail());
+            this.sController.executeQuery(query);
             this.showCursists();
         }
     }
 
     public void updateRecord() {
-        if (cursistTable.getSelectionModel().getSelectedItem() == null) {
+        if (studentTable.getSelectionModel().getSelectedItem() == null) {
             Alert warningAlert = new Alert(Alert.AlertType.WARNING);
             warningAlert.setContentText("Geen record geselecteerd");
             warningAlert.show();}
         else {
-            String query = cController.makeUpdateQuery(
+            String query = sController.makeUpdateQuery(
                     this.tfEmail.getText(),
                     this.tfName.getText(),
                     Integer.parseInt(this.tfBirthDay.getText()),
@@ -192,26 +187,30 @@ public class CursistMenu {
                     this.tfStreet.getText(),
                     Integer.parseInt(this.tfhouseNr.getText()),
                     this.tfCountry.getText());
-            cController.executeQuery(query);
+            sController.executeQuery(query);
             this.showCursists();
         }
+    }
+    public LocalDate dayMonthYearToTypeDate(int day, int month, int year){
+    LocalDate date = LocalDate.of(year, month, day);
+    return date;
     }
 
     //Zet data in de inputfields door op een cel van de tabel te klikken.
     public void setCellValueFromTableToTextField(){
-        cursistTable.setOnMouseClicked(e -> {
-            Cursist cursist = cursistTable.getItems().get(cursistTable.getSelectionModel().getSelectedIndex());
-            this.tfEmail.setText(cursist.getEmail());
-            this.tfName.setText(cursist.getName());
-            this.tfBirthDay.setText(String.valueOf(cursist.getBirthDay()));
-            this.tfBirthMonth.setText(String.valueOf(cursist.getBirthMonth()));
-            this.tfBirthYear.setText(String.valueOf(cursist.getBirthYear()));
-            this.sexMenuBox.setValue(cursist.getSex());
-            this.tfCity.setText(cursist.getCity());
-            this.tfPostalCode.setText(cursist.getPostalCode());
-            this.tfStreet.setText(cursist.getStreet());
-            this.tfhouseNr.setText(String.valueOf(cursist.getHouseNr()));
-            this.tfCountry.setText(cursist.getCountry());
+        studentTable.setOnMouseClicked(e -> {
+            Student student = studentTable.getItems().get(studentTable.getSelectionModel().getSelectedIndex());
+            this.tfEmail.setText(student.getEmail());
+            this.tfName.setText(student.getName());
+            this.tfBirthDay.setText(String.valueOf(student.getBirthDay()));
+            this.tfBirthMonth.setText(String.valueOf(student.getBirthMonth()));
+            this.tfBirthYear.setText(String.valueOf(student.getBirthYear()));
+            this.sexMenuBox.setValue(student.getSex());
+            this.tfCity.setText(student.getCity());
+            this.tfPostalCode.setText(student.getPostalCode());
+            this.tfStreet.setText(student.getStreet());
+            this.tfhouseNr.setText(String.valueOf(student.getHouseNr()));
+            this.tfCountry.setText(student.getCountry());
         });
     }
 }
