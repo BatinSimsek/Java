@@ -60,10 +60,10 @@ public class StudentMenu {
 
     // onderstaande methode zet cursisten data in de cellen van de tabel.
     public void showCursists(){
-        ObservableList<Student> studentList = sController.studentList();
+        ObservableList<Student> studentList = sController.getStudentList();
         this.emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
         this.nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        this.sexCol.setCellValueFactory(new PropertyValueFactory<>("sex"));
+        this.sexCol.setCellValueFactory(new PropertyValueFactory<>("gender"));
         this.bdCol.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
         this.cityCol.setCellValueFactory(new PropertyValueFactory<>("city"));
         this.pcCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
@@ -95,6 +95,7 @@ public class StudentMenu {
         this.btnDelete.setOnAction((event)->this.deleteRecord());
         this.btnUpdate.setOnAction((event)->this.updateRecord());
         this.setCellValueFromTableToTextField();
+        this.studentTable.getColumns().clear();
         this.studentTable.getColumns().addAll(this.emailCol, this.nameCol, this.bdCol,
                 this.sexCol, this.cityCol, this.pcCol, this.streetCol, this.houseNrCol, this.countryCol);
 
@@ -146,7 +147,7 @@ public class StudentMenu {
                 this.tfStreet.getText(),
                 Integer.parseInt(this.tfhouseNr.getText()),
                 this.tfCountry.getText());
-        sController.executeQuery(query);
+        db.executeQuery(query);
         this.showCursists();
     }
 
@@ -164,7 +165,7 @@ public class StudentMenu {
             Student student = studentTable.getItems().get(row);
 
             String query = sController.makeDeleteQuery(student.getEmail());
-            this.sController.executeQuery(query);
+            this.db.executeQuery(query);
             this.showCursists();
         }
     }
@@ -187,13 +188,9 @@ public class StudentMenu {
                     this.tfStreet.getText(),
                     Integer.parseInt(this.tfhouseNr.getText()),
                     this.tfCountry.getText());
-            sController.executeQuery(query);
+            db.executeQuery(query);
             this.showCursists();
         }
-    }
-    public LocalDate dayMonthYearToTypeDate(int day, int month, int year){
-    LocalDate date = LocalDate.of(year, month, day);
-    return date;
     }
 
     //Zet data in de inputfields door op een cel van de tabel te klikken.
@@ -205,7 +202,7 @@ public class StudentMenu {
             this.tfBirthDay.setText(String.valueOf(student.getBirthDay()));
             this.tfBirthMonth.setText(String.valueOf(student.getBirthMonth()));
             this.tfBirthYear.setText(String.valueOf(student.getBirthYear()));
-            this.sexMenuBox.setValue(student.getSex());
+            this.sexMenuBox.setValue(student.getGender());
             this.tfCity.setText(student.getCity());
             this.tfPostalCode.setText(student.getPostalCode());
             this.tfStreet.setText(student.getStreet());

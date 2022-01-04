@@ -1,14 +1,14 @@
 package Domain;
 
 import java.time.LocalDate;
-import java.util.Date;
+
 
 public class Student {
 
     private String email;
     private String name;
     private LocalDate birthDate;
-    private String sex;
+    private String gender;
     private String city;
     private String postalCode;
     private String street;
@@ -16,14 +16,14 @@ public class Student {
     private String country;
 
     //constructor
-    public Student(String email, String name, LocalDate birthDate, String sex, String city, String postalCode, String street, int houseNr, String country) {
+    public Student(String email, String name, LocalDate birthDate, String gender, String city, String postalCode, String street, int houseNr, String country) {
         this.email = email;
         this.name = name;
         this.birthDate = birthDate;
         this.postalCode = postalCode;
         this.street = street;
         this.houseNr = houseNr;
-        this.sex = sex;
+        this.gender = gender;
         this.city = city;
         this.country = country;
     }
@@ -56,8 +56,8 @@ public class Student {
 
     }
 
-    public String getSex() {
-        return sex;
+    public String getGender() {
+        return gender;
     }
 
     public String getCity() {
@@ -89,7 +89,7 @@ public class Student {
     }
 
     public void setSex(String sex) {
-        this.sex = sex;
+        this.gender = gender;
     }
 
     public void setCity(String city) {

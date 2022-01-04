@@ -5,21 +5,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class EnrollController {
-    private Database database = new Database();
+    private Database db = new Database();
 
 
 
 
-    public void executeQuery(String query){
-        Connection conn = database.getConnection();
-        try{
-            Statement st = conn.createStatement();
-            st.executeUpdate(query);
-        }
-        catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
+
 
     public void makeInsertQuery (int dateDay,int dateMonth, int dateYear, int certificateID, String courseName, String email){
 
@@ -27,7 +18,7 @@ public class EnrollController {
                 + dateMonth + "'," + dateYear + ","
                 + certificateID + "," + courseName + ",'"
                 + email + "')";
-        executeQuery(query);
+        db.executeQuery(query);
         System.out.println(query);
     }
 
