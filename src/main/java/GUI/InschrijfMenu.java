@@ -1,20 +1,23 @@
 package GUI;
 
 import Database.CourseController;
+import Database.Database;
 import Database.StudentController;
 import Database.EnrollController;
 import Domain.Course;
+import Domain.Enroll;
 import Domain.Student;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
+import java.time.LocalDate;
+
 
 public class InschrijfMenu {
         public Button backBtn = new Button("Terug");
@@ -26,145 +29,67 @@ public class InschrijfMenu {
         private final Label errorMail = new Label("");
 
         private Label courseName = new Label("* cursus: ");
-        private ComboBox comboBox = new ComboBox();
+        private ComboBox comboBoxCourse = new ComboBox();
+        private ComboBox comboBoxMail = new ComboBox();
         private final Label errorCourse = new Label("");
 
-        StudentController cursistController = new StudentController();
+        StudentController studentController = new StudentController();
         CourseController courseController = new CourseController();
         EnrollController enrollController = new EnrollController();
+        Database database = new Database();
 
 
-        private boolean availableEmail = false;
-        private boolean selectedCourse = false;
+        private Button btnInsert = new Button("Toevoegen");
+        private Button btnDelete = new Button("Verwijderen");
+        private Button btnUpdate = new Button("Update");
 
-        private Label titleCourse = new Label("Je hebt je ingeschreven voor: ");
-        private Label getGivenMail = new Label("");
-        private Label nameCourseLabel = new Label("");
-        private Label difficultyLabel = new Label("");
-        private Label topicLabel = new Label("");
-
-        private Button resetBtn = new Button("Reset");
-        private Button confirmBtn = new Button("Confirm");
-
-        private String nameCourse = "";
-        private String difficulty = "";
-        private String topic = "";
+        private TableView<Enroll> enrollTable = new TableView<>();
+        private TableColumn<Enroll, String> emailCol = new TableColumn<>("Email");
+        private TableColumn<Enroll, String> dateCol = new TableColumn<>("Date");
+        private TableColumn<Enroll, LocalDate> courseCol = new TableColumn<>("Course");
+        private TableColumn<Enroll, String> certIDCol = new TableColumn<>("CertificateID");
 
     public Scene getScene() {
         BorderPane mainPane = new BorderPane();
         GridPane userInputPane = getContent();
-        GridPane selectedCourseGrid = getCourseInfoPane();
+        GridPane buttonsPane = getButtons();
+        GridPane tablePane = getTable();
+
+
+
 
         mainPane.setCenter(userInputPane);
-        getInfoAfterEnrollPane(mainPane, selectedCourseGrid);
-        mainPane.snapSpaceY(10);
-        Scene scene = new Scene(mainPane,600,630);
+        mainPane.setBottom(buttonsPane);
+        mainPane.setRight(tablePane);
+        Scene scene = new Scene(mainPane,1000,400);
         return scene;
     }
 
-    private void getInfoAfterEnrollPane(BorderPane mainPane, GridPane selectedCourseGrid) {
-        enrollBtn.setOnAction(actionEvent -> {
-            CheckIfMailAvailable();
-            ChooseAvailableCourse();
-
-            if (availableEmail && selectedCourse) {
-                mainPane.setBottom(selectedCourseGrid);
-
-                for (Course course : courseController.getCourse()) {
-                    if (course.getCourse().equals(comboBox.getValue())) {
-                        nameCourseLabel.setText(course.getCourse());
-                        difficultyLabel.setText(course.getLevel());
-                        topicLabel.setText(course.getTopic());
-                        getGivenMail.setText(mailTextField.getText());
-                        availableEmail = false;
-                        selectedCourse = false;
-                        break;
-                    }
-                }
-            }
-        });
+    private GridPane getTable() {
+        GridPane pane = new GridPane();
+        this.enrollTable.getColumns().clear();
+        this.enrollTable.getColumns().addAll(this.emailCol, this.dateCol, this.courseCol, this.certIDCol);
+        pane.add(enrollTable,0,0);
+        return pane;
     }
 
-    private GridPane getCourseInfoPane() {
-        GridPane selectedCourseGrid = new GridPane();
-        selectedCourseGrid.add(titleCourse,0,0);
-        titleCourse.setFont(Font.font("Verdana",15));
+    private GridPane getButtons() {
+        GridPane pane = new GridPane();
 
+        pane.add(backBtn,0,0);
+        pane.add(btnInsert,1,0);
+        btnInsert.setOnAction(actionEvent -> insertRecord());
+        pane.add(btnUpdate,2,0);
+        pane.add(btnDelete,3,0);
 
-        selectedCourseGrid.add(new Label("Naam cursus: "),0,1);
-        selectedCourseGrid.add(nameCourseLabel,1,1);
-        selectedCourseGrid.add(new Label("Onderwerp: "),0,2);
-        selectedCourseGrid.add(topicLabel,1,2);
-        selectedCourseGrid.add(new Label("Moeilijkheidsgraad: "),0,3);
-        selectedCourseGrid.add(difficultyLabel,1,3);
-        selectedCourseGrid.add(new Label("Opgegeven mail: "),0,4);
-        selectedCourseGrid.add(getGivenMail,1,4);
-
-        selectedCourseGrid.add(resetBtn,1,5);
-        selectedCourseGrid.add(confirmBtn,2,5);
-
-        resetBtn.setOnAction(actionEvent -> {
-            resetAllInput();
-        });
-        confirmBtn.setOnAction(actionEvent -> {
-            addEnrollmentToDataBase();
-            resetAllInput();
-        });
-
-        selectedCourseGrid.setHgap(30);
-        selectedCourseGrid.setVgap(30);
-        selectedCourseGrid.setPadding(new Insets(50,50,50,50));
-        return selectedCourseGrid;
+        pane.setPadding(new Insets(50,50,50,50));
+        pane.setVgap(30);
+        pane.setHgap(30);
+        return pane;
     }
 
-    private void resetAllInput() {
-        availableEmail = false;
-        selectedCourse = false;
-        mailTextField.setText("");
-        errorMail.setText("");
-        errorCourse.setText("");
-        nameCourseLabel.setText("");
-        difficultyLabel.setText("");
-        topicLabel.setText("");
-        getGivenMail.setText("");
-    }
 
-    private void addEnrollmentToDataBase() {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = new Date();
-        String[] newDate = formatter.format(date).split("/");
-        enrollController.makeInsertQuery(
-                Integer.parseInt(newDate[0]),
-                Integer.parseInt(newDate[1]),
-                Integer.parseInt(newDate[2]),
-                getRandomID(),
-                nameCourseLabel.getText(),
-                mailTextField.getText());
-    }
 
-    public int getRandomID() {
-        Random random = new Random();
-        return random.nextInt(9999);
-    }
-
-    private void ChooseAvailableCourse() {
-        if (comboBox.getValue() == null) {
-            errorCourse.setText("Kies een geldige cursus.");
-        } else {
-            selectedCourse = true;
-            errorCourse.setText("cursus gevonden!");
-        }
-    }
-
-    private void CheckIfMailAvailable() {
-        for (Student student : cursistController.getStudentList()){
-            if (student.getEmail().equals(mailTextField.getText())) {
-                errorMail.setText("Email gevonden!");
-                availableEmail = true;
-                break;
-            } else { errorMail.setText("Email niet gevonden in de database"); }
-        }
-    }
 
     private GridPane getContent() {
         GridPane gridPane = new GridPane();
@@ -172,24 +97,48 @@ public class InschrijfMenu {
         introText.setFont(Font.font("Verdana",15));
 
         gridPane.add(mailText,0,1);
-        gridPane.add(mailTextField,1,1);
-        gridPane.add(errorMail,2,1);
-
-        gridPane.add(courseName,0,2);
-        gridPane.add(comboBox,1,2);
-        gridPane.add(errorCourse,2,2);
-        comboBox.setPrefWidth(150);
-        comboBox.getItems().clear();
-        for (Course courses : courseController.getCourse()) {
-            comboBox.getItems().add(courses.getCourse());
+        gridPane.add(comboBoxMail,1,1);
+        comboBoxMail.setPrefWidth(150);
+        comboBoxMail.getItems().clear();
+        for (Student student: studentController.getStudentList()) {
+            comboBoxCourse.getItems().add(student.getEmail());
         }
-
-        gridPane.add(backBtn,0,3);
-        gridPane.add(enrollBtn,1,3);
+        gridPane.add(errorMail,2,1);
+        gridPane.add(courseName,0,2);
+        gridPane.add(comboBoxCourse,1,2);
+        gridPane.add(errorCourse,2,2);
+        comboBoxCourse.setPrefWidth(150);
+        comboBoxCourse.getItems().clear();
+        for (Course courses : courseController.getCourse()) {
+            comboBoxCourse.getItems().add(courses.getCourse());
+        }
 
         gridPane.setPadding(new Insets(50,50,50,50));
         gridPane.setVgap(30);
         gridPane.setHgap(30);
         return gridPane;
+    }
+
+    //De methoden die toevoegButton moet uitvoeren
+    private void insertRecord(){
+        LocalDate date = LocalDate.now();
+//        String email, int certificateFK, LocalDate registrationDate, String courseNameFK
+        String query = enrollController.makeInsertQuery(
+                comboBoxMail.getValue().toString(),
+                123,
+                date,
+                comboBoxCourse.getValue().toString());
+
+        database.executeQuery(query);
+        this.showEnrolls();
+    }
+
+    public void showEnrolls(){
+        ObservableList<Enroll> enrollObservableList = enrollController.getEnrollment();
+        this.emailCol.setCellValueFactory(new PropertyValueFactory<>("emailFk"));
+        this.certIDCol.setCellValueFactory(new PropertyValueFactory<>("certificateFK"));
+        this.dateCol.setCellValueFactory(new PropertyValueFactory<>("registrationDate"));
+        this.courseCol.setCellValueFactory(new PropertyValueFactory<>("courseNameFK"));
+        this.enrollTable.setItems(enrollObservableList);
     }
 }
