@@ -16,7 +16,7 @@ public class EnrollController {
 
 
     // Onderstaande methode geeft een lijst met cursist objecten.
-    public ObservableList<Enroll> getEnrollment() {
+    public ObservableList<Enroll> getEnrollmentList() {
         ObservableList<Enroll> enrollList = FXCollections.observableArrayList();
         String query = "SELECT * FROM enrollment";
 
@@ -27,7 +27,7 @@ public class EnrollController {
 
             while (rs.next()) {
                 Enroll enroll = new Enroll(
-                        rs.getString("email"),
+                        rs.getString("emailFk"),
                         rs.getInt("certificateFK"),
                         rs.getDate("registrationDate").toLocalDate(),
                         rs.getString("courseNameFK"));
@@ -42,8 +42,8 @@ public class EnrollController {
 
     public String makeInsertQuery (String email, int certificateFK, LocalDate registrationDate, String courseNameFK){
 
-        String query = "INSERT INTO enrollment VALUES('" + email + "',"
-                + certificateFK + ",'" + registrationDate + "', '" + courseNameFK + "'" +")";
+        String query = "INSERT INTO enrollment VALUES('" + registrationDate + "',"
+                + certificateFK + ",'" + courseNameFK + "', '" + email + "'" +")";
         return query;
     }
 
@@ -54,30 +54,10 @@ public class EnrollController {
     }
 
     // deze methode stelt een update query samen om een cursist te updaten
-    public String makeUpdateQuery(String email, String name, int bd, int bm, int by, String gender, String city,
-                                  String postalCode, String street, int houseNr, String country) {
-        String query = "UPDATE student SET name ='" + name +
-                "', birthDate = '" + by + "-" + bm + "-" + bd + "'," +
-                "gender = '" + gender +
-                "', city = '" + city +
-                "', postalCode = '" + postalCode +
-                "', street = '" + street +
-                "', houseNr = '" + houseNr +
-                "', country = '" + country +
-                "' WHERE email = '" + email +"'";
+    public String makeUpdateQuery(String email, String courseNameFK) {
+        String query = "UPDATE enrollment SET emailFk ='" + email + "', courseNameFK = '" + courseNameFK + "'";
         return query;
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

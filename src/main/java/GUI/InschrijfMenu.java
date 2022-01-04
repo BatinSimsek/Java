@@ -65,13 +65,7 @@ public class InschrijfMenu {
         return scene;
     }
 
-    private GridPane getTable() {
-        GridPane pane = new GridPane();
-        this.enrollTable.getColumns().clear();
-        this.enrollTable.getColumns().addAll(this.emailCol, this.dateCol, this.courseCol, this.certIDCol);
-        pane.add(enrollTable,0,0);
-        return pane;
-    }
+
 
     private GridPane getButtons() {
         GridPane pane = new GridPane();
@@ -80,7 +74,10 @@ public class InschrijfMenu {
         pane.add(btnInsert,1,0);
         btnInsert.setOnAction(actionEvent -> insertRecord());
         pane.add(btnUpdate,2,0);
+        btnUpdate.setOnAction(actionEvent -> updateRecord());
         pane.add(btnDelete,3,0);
+        btnDelete.setOnAction(actionEvent -> deleteRecord());
+        this.setCellValueFromTableToTextField();
 
         pane.setPadding(new Insets(50,50,50,50));
         pane.setVgap(30);
@@ -88,8 +85,47 @@ public class InschrijfMenu {
         return pane;
     }
 
+    private void deleteRecord(){
+        //Controleer of er een record geselecteerd is.
+        if (enrollTable.getSelectionModel().getSelectedItem() == null) {
+            Alert warningAlert = new Alert(Alert.AlertType.WARNING);
+            warningAlert.setContentText("Geen record geselecteerd");
+            warningAlert.show();}
 
+        // Ophalen en vervolgens verwijderen van record a.d.h.v muisselectie
+        else {
+            TablePosition pos = enrollTable.getSelectionModel().getSelectedCells().get(0);
+            int row = pos.getRow();
+            Enroll enroll = enrollTable.getItems().get(row);
 
+            String query = enrollController.makeDeleteQuery(enroll.getEmail());
+            this.database.executeQuery(query);
+            this.showEnrolls();
+        }
+    }
+
+    public void updateRecord() {
+        if (enrollTable.getSelectionModel().getSelectedItem() == null) {
+            Alert warningAlert = new Alert(Alert.AlertType.WARNING);
+            warningAlert.setContentText("Geen record geselecteerd");
+            warningAlert.show();}
+        else {
+            String query = enrollController.makeUpdateQuery(
+                    comboBoxMail.getValue().toString(),
+                    comboBoxCourse.getValue().toString());
+            database.executeQuery(query);
+            this.showEnrolls();
+        }
+    }
+    //Zet data in de inputfields door op een cel van de tabel te klikken.
+    public void setCellValueFromTableToTextField(){
+        enrollTable.setOnMouseClicked(e -> {
+            Enroll enroll = enrollTable.getItems().get(enrollTable.getSelectionModel().getSelectedIndex());
+            this.comboBoxMail.setValue(enroll.getEmail());
+            this.comboBoxCourse.setValue(enroll.getCourseNameFK());
+
+        });
+    }
 
     private GridPane getContent() {
         GridPane gridPane = new GridPane();
@@ -100,8 +136,8 @@ public class InschrijfMenu {
         gridPane.add(comboBoxMail,1,1);
         comboBoxMail.setPrefWidth(150);
         comboBoxMail.getItems().clear();
-        for (Student student: studentController.getStudentList()) {
-            comboBoxCourse.getItems().add(student.getEmail());
+        for (Student student : studentController.getStudentList()) {
+            comboBoxMail.getItems().add(student.getEmail());
         }
         gridPane.add(errorMail,2,1);
         gridPane.add(courseName,0,2);
@@ -122,10 +158,9 @@ public class InschrijfMenu {
     //De methoden die toevoegButton moet uitvoeren
     private void insertRecord(){
         LocalDate date = LocalDate.now();
-//        String email, int certificateFK, LocalDate registrationDate, String courseNameFK
         String query = enrollController.makeInsertQuery(
                 comboBoxMail.getValue().toString(),
-                123,
+                 1,
                 date,
                 comboBoxCourse.getValue().toString());
 
@@ -133,9 +168,18 @@ public class InschrijfMenu {
         this.showEnrolls();
     }
 
+    private GridPane getTable() {
+        GridPane pane = new GridPane();
+        this.enrollTable.getColumns().clear();
+        this.enrollTable.getColumns().addAll(this.emailCol, this.dateCol, this.courseCol, this.certIDCol);
+        pane.add(enrollTable,0,0);
+        this.showEnrolls();
+        return pane;
+    }
+
     public void showEnrolls(){
-        ObservableList<Enroll> enrollObservableList = enrollController.getEnrollment();
-        this.emailCol.setCellValueFactory(new PropertyValueFactory<>("emailFk"));
+        ObservableList<Enroll> enrollObservableList = enrollController.getEnrollmentList();
+        this.emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
         this.certIDCol.setCellValueFactory(new PropertyValueFactory<>("certificateFK"));
         this.dateCol.setCellValueFactory(new PropertyValueFactory<>("registrationDate"));
         this.courseCol.setCellValueFactory(new PropertyValueFactory<>("courseNameFK"));

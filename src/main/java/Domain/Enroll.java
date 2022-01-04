@@ -7,14 +7,14 @@ import java.time.LocalDate;
 public class Enroll {
 
 
-    private String email;
+    private String emailFk;
     private int certificateFK;
     private LocalDate registrationDate;
     private String courseNameFK;
 
     public Enroll(String email, int certificateFK, LocalDate registrationDate, String courseNameFK) {
 
-        this.email = email;
+        this.emailFk = email;
         this.certificateFK = certificateFK;
         this.registrationDate = registrationDate;
         this.courseNameFK = courseNameFK;
@@ -22,11 +22,11 @@ public class Enroll {
 
 
     public String getEmail() {
-        return email;
+        return emailFk;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.emailFk = email;
     }
 
     public int getCertificateFK() {
