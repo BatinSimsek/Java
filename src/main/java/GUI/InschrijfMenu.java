@@ -16,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 
@@ -48,6 +49,9 @@ public class InschrijfMenu {
         private TableColumn<Enroll, String> dateCol = new TableColumn<>("Date");
         private TableColumn<Enroll, LocalDate> courseCol = new TableColumn<>("Course");
         private TableColumn<Enroll, String> certIDCol = new TableColumn<>("CertificateID");
+
+        String emailCellValue = "";
+        String courseCellValue = "";
 
     public Scene getScene() {
         BorderPane mainPane = new BorderPane();
@@ -98,24 +102,31 @@ public class InschrijfMenu {
             int row = pos.getRow();
             Enroll enroll = enrollTable.getItems().get(row);
 
-            String query = enrollController.makeDeleteQuery(enroll.getEmail());
+            String query = enrollController.makeDeleteQuery(enroll.getEmail(),enroll.getCourseNameFK(),enroll.getRegistrationDate());
             this.database.executeQuery(query);
             this.showEnrolls();
         }
     }
 
     public void updateRecord() {
-        if (enrollTable.getSelectionModel().getSelectedItem() == null) {
-            Alert warningAlert = new Alert(Alert.AlertType.WARNING);
-            warningAlert.setContentText("Geen record geselecteerd");
-            warningAlert.show();}
-        else {
-            String query = enrollController.makeUpdateQuery(
-                    comboBoxMail.getValue().toString(),
-                    comboBoxCourse.getValue().toString());
-            database.executeQuery(query);
-            this.showEnrolls();
-        }
+
+            if (enrollTable.getSelectionModel().getSelectedItem() == null) {
+                Alert warningAlert = new Alert(Alert.AlertType.WARNING);
+                warningAlert.setContentText("Geen record geselecteerd");
+                warningAlert.show();}
+            else {
+                String query = enrollController.makeUpdateQuery(
+                        comboBoxMail.getValue().toString(),
+                        comboBoxCourse.getValue().toString(),
+                        this.emailCellValue,
+                        this.courseCellValue);
+                database.executeQuery(query);
+                this.showEnrolls();
+            }
+//            Alert warningAlert = new Alert(Alert.AlertType.WARNING);
+//            warningAlert.setContentText("Er bestaat al een record met deze waardes!");
+//            warningAlert.show();
+
     }
     //Zet data in de inputfields door op een cel van de tabel te klikken.
     public void setCellValueFromTableToTextField(){
@@ -123,7 +134,8 @@ public class InschrijfMenu {
             Enroll enroll = enrollTable.getItems().get(enrollTable.getSelectionModel().getSelectedIndex());
             this.comboBoxMail.setValue(enroll.getEmail());
             this.comboBoxCourse.setValue(enroll.getCourseNameFK());
-
+            this.emailCellValue = enroll.getEmail();
+            this.courseCellValue = enroll.getCourseNameFK();
         });
     }
 
@@ -157,12 +169,14 @@ public class InschrijfMenu {
 
     //De methoden die toevoegButton moet uitvoeren
     private void insertRecord(){
+
         LocalDate date = LocalDate.now();
         String query = enrollController.makeInsertQuery(
                 comboBoxMail.getValue().toString(),
                  1,
                 date,
-                comboBoxCourse.getValue().toString());
+                comboBoxCourse.getValue().toString()
+                );
 
         database.executeQuery(query);
         this.showEnrolls();
@@ -184,5 +198,11 @@ public class InschrijfMenu {
         this.dateCol.setCellValueFactory(new PropertyValueFactory<>("registrationDate"));
         this.courseCol.setCellValueFactory(new PropertyValueFactory<>("courseNameFK"));
         this.enrollTable.setItems(enrollObservableList);
+    }
+
+    public void showDuplicationError () {
+        Alert warningAlert = new Alert(Alert.AlertType.WARNING);
+        warningAlert.setContentText("Er bestaat al een record met deze combinatie!");
+        warningAlert.show();
     }
 }

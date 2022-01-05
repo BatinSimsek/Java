@@ -1,6 +1,8 @@
 package Database;
 
 import Domain.Enroll;
+import GUI.InschrijfMenu;
+import com.sun.jdi.request.DuplicateRequestException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -12,7 +14,6 @@ import java.time.LocalDate;
 
 public class EnrollController {
     private Database db = new Database();
-
 
 
     // Onderstaande methode geeft een lijst met cursist objecten.
@@ -48,16 +49,14 @@ public class EnrollController {
     }
 
     //Deze methode stelt een query samen om een cursist record te verwijderen
-    public String makeDeleteQuery (String email){
-        String query = "DELETE FROM student WHERE email =" + "'" + email + "'";
+    public String makeDeleteQuery (String email, String courseName, LocalDate registrationDate){
+        String query = "DELETE FROM enrollment WHERE emailFk = '" + email + "'AND courseNameFK = '" + courseName + "' AND registrationDate = '" + registrationDate + "'";
         return query;
     }
 
     // deze methode stelt een update query samen om een cursist te updaten
-    public String makeUpdateQuery(String email, String courseNameFK) {
-        String query = "UPDATE enrollment SET emailFk ='" + email + "', courseNameFK = '" + courseNameFK + "'";
-        return query;
+    public String makeUpdateQuery(String email, String courseNameFK, String emailCellValue, String courseCellValue) {
+            String query = "UPDATE enrollment SET emailFk ='" + email + "', courseNameFK = '" + courseNameFK + "' WHERE emailFK = '" + emailCellValue + "' AND courseNameFK = '" + courseCellValue + "'";
+            return query;
     }
-
-
 }
