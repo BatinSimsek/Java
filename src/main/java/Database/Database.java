@@ -18,17 +18,17 @@ public class Database {
     }
 
     //Deze methoden voert een query uit.
-    public void executeQuery(String query){
+    public void executeQueryThrowsException (String query) throws SQLException {
         Connection conn = this.getConnection();
-        try{
-            Statement st = conn.createStatement();
-            st.executeUpdate(query);
-        }
-        catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        Statement st = conn.createStatement();
+        st.executeUpdate(query);
     }
 
-
-
+    public void executeQuery (String query){
+        try {
+            executeQueryThrowsException(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -7,6 +7,8 @@ import Database.EnrollController;
 import Domain.Course;
 import Domain.Enroll;
 import Domain.Student;
+import com.microsoft.sqlserver.jdbc.SQLServerDataTable;
+import com.sun.jdi.request.DuplicateRequestException;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -16,8 +18,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 
+import java.sql.SQLData;
+import java.sql.SQLDataException;
 import java.sql.SQLException;
+import java.sql.SQLWarning;
 import java.time.LocalDate;
+import java.util.DuplicateFormatFlagsException;
 
 
 public class InschrijfMenu {
@@ -110,6 +116,7 @@ public class InschrijfMenu {
 
     public void updateRecord() {
 
+        try {
             if (enrollTable.getSelectionModel().getSelectedItem() == null) {
                 Alert warningAlert = new Alert(Alert.AlertType.WARNING);
                 warningAlert.setContentText("Geen record geselecteerd");
@@ -120,14 +127,49 @@ public class InschrijfMenu {
                         comboBoxCourse.getValue().toString(),
                         this.emailCellValue,
                         this.courseCellValue);
-                database.executeQuery(query);
+                database.executeQueryThrowsException(query);
                 this.showEnrolls();
             }
-//            Alert warningAlert = new Alert(Alert.AlertType.WARNING);
-//            warningAlert.setContentText("Er bestaat al een record met deze waardes!");
-//            warningAlert.show();
-
+            //              Geeft een error wanneer je 2 zelfde records probeerdt toe te voegen.
+        } catch (SQLException exc) {
+            exc.printStackTrace();
+            if (isDuplicateEntryException(exc)) {
+                Alert warningAlert = new Alert(Alert.AlertType.WARNING);
+                warningAlert.setContentText("Er bestaat al een record met deze waardes!");
+                warningAlert.show();
+            }
+        }
     }
+
+    //De methoden die toevoegButton moet uitvoeren
+    private void insertRecord(){
+        try {
+            LocalDate date = LocalDate.now();
+            String query = enrollController.makeInsertQuery(
+                    comboBoxMail.getValue().toString(),
+                    1,
+                    date,
+                    comboBoxCourse.getValue().toString()
+            );
+
+            database.executeQueryThrowsException(query);
+            this.showEnrolls();
+//              Geeft een error wanneer je 2 zelfde records probeerdt toe te voegen.
+        } catch (SQLException exc) {
+            exc.printStackTrace();
+            if (isDuplicateEntryException(exc)) {
+                Alert warningAlert = new Alert(Alert.AlertType.WARNING);
+                warningAlert.setContentText("Er bestaat al een record met deze waardes!");
+                warningAlert.show();
+            }
+        }
+    }
+
+//    De code die de exceptie gebruikt om te kijken of er duplicaties zitten in het tabel.
+    private boolean isDuplicateEntryException(SQLException exc) {
+        return exc.getSQLState().equals("23000");
+    }
+
     //Zet data in de inputfields door op een cel van de tabel te klikken.
     public void setCellValueFromTableToTextField(){
         enrollTable.setOnMouseClicked(e -> {
@@ -167,20 +209,7 @@ public class InschrijfMenu {
         return gridPane;
     }
 
-    //De methoden die toevoegButton moet uitvoeren
-    private void insertRecord(){
 
-        LocalDate date = LocalDate.now();
-        String query = enrollController.makeInsertQuery(
-                comboBoxMail.getValue().toString(),
-                 1,
-                date,
-                comboBoxCourse.getValue().toString()
-                );
-
-        database.executeQuery(query);
-        this.showEnrolls();
-    }
 
     private GridPane getTable() {
         GridPane pane = new GridPane();
