@@ -61,9 +61,9 @@ private Database db = new Database();
     }
 
     // deze methode stelt een update query samen om een cursist te updaten
-    public String makeUpdateQuery(String email, String name, int bd, int bm, int by, String gender, String city,
-                                  String postalCode, String street, int houseNr, String country) {
-        String query = "UPDATE student SET name ='" + name +
+    public String makeUpdateQuery(String emailNew, String name, int bd, int bm, int by, String gender, String city,
+                                  String postalCode, String street, int houseNr, String country, String emailOld) {
+        String query = "UPDATE student SET email ='" + emailNew + "', name = '" + name +
                 "', birthDate = '" + by + "-" + bm + "-" + bd + "'," +
                 "gender = '" + gender +
                 "', city = '" + city +
@@ -71,7 +71,7 @@ private Database db = new Database();
                 "', street = '" + street +
                 "', houseNr = '" + houseNr +
                 "', country = '" + country +
-                "' WHERE email = '" + email +"'";
+                "' WHERE email = '" + emailOld +"'";
         return query;
     }
 }
