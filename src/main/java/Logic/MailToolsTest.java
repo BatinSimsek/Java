@@ -63,11 +63,12 @@ public class MailToolsTest {
     @Test (expected = ArrayIndexOutOfBoundsException.class)
     public void CheckIfMailContainsAtleastOneCharBeforeAtSign () {
         //Arrange
-        String email = "@test.com";
+        String email = "A@test.com";
 
-        //Act // waarom vind print hij de exception niet, maar geeft als nog test gehaald?
+        //Act // waarom print hij de exception niet, maar geeft als nog test gehaald?
         boolean result = MailTools.validateMailAddress(email);
 
+        System.out.println();
         //Assert
         assertEquals(false, result);
     }
