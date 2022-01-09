@@ -76,9 +76,9 @@ public class CourseMenu {
             drMenuBoxLevel.getItems().add(level);
         }
 
-        for (){
-            drMenuBoxLevel.getItems().add(content);
-        }
+//        for (){
+//            drMenuBoxLevel.getItems().add(content);
+//        }
 
         gridPane.add(courseName, 0, 0);
         gridPane.add(tfCourseName, 1, 0);
