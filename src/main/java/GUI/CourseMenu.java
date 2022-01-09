@@ -4,6 +4,7 @@ import Database.CourseController;
 import Database.Database;
 import Domain.Course;
 import Domain.Level;
+import Domain.Module;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -24,11 +25,13 @@ public class CourseMenu {
     private TextField tfCourseName = new TextField();
     private TextField tfTopic = new TextField();
     private TextArea tfDescription = new TextArea();
-    private ComboBox drMenuBox = new ComboBox();
+    private ComboBox drMenuBoxLevel = new ComboBox();
+    private ComboBox drMenuBoxContentItem = new ComboBox();
     private Label courseName = new Label("Cursusnaam: ");
     private Label topic = new Label("Onderwerp: ");
     private Label description = new Label("Beschrijving: ");
     private Label level = new Label("Level: ");
+    private Label Content = new Label("Content: ");
     private Button btnInsert = new Button("Toevoegen");
     private Button btnDelete = new Button("Verwijderen");
     private Button btnUpdate = new Button("Update");
@@ -70,7 +73,11 @@ public class CourseMenu {
         this.showCourse();
 
         for (Level level : Level.values()) {
-            drMenuBox.getItems().add(level);
+            drMenuBoxLevel.getItems().add(level);
+        }
+
+        for (){
+            drMenuBoxLevel.getItems().add(content);
         }
 
         gridPane.add(courseName, 0, 0);
@@ -80,8 +87,10 @@ public class CourseMenu {
         gridPane.add(description, 0,2);
         gridPane.add(tfDescription, 1,2);
         gridPane.add(level, 0, 3);
-        gridPane.add(drMenuBox, 1, 3);
-        gridPane.add(hbox, 0, 4);
+        gridPane.add(drMenuBoxLevel, 1, 3);
+        gridPane.add(Content, 0, 4);
+        gridPane.add(drMenuBoxContentItem, 1, 4);
+        gridPane.add(hbox, 0, 5);
 
         Scene scene = new Scene(bp);
         return scene;
@@ -93,7 +102,7 @@ public class CourseMenu {
                 this.tfCourseName.getText(),
                 this.tfTopic.getText(),
                 this.tfDescription.getText(),
-                this.drMenuBox.getValue().toString());
+                this.drMenuBoxLevel.getValue().toString());
         db.executeQuery(query);
         this.showCourse();
     }
@@ -104,7 +113,7 @@ public class CourseMenu {
             this.tfCourseName.setText(p1.getCourse());
             this.tfTopic.setText(p1.getTopic());
             this.tfDescription.setText(p1.getDescription());
-            this.drMenuBox.setValue(p1.getLevel().toString());
+            this.drMenuBoxLevel.setValue(p1.getLevel().toString());
         });
     }
 
@@ -137,7 +146,7 @@ public class CourseMenu {
                     this.tfCourseName.getText(),
                     this.tfTopic.getText(),
                     this.tfDescription.getText(),
-                    this.drMenuBox.getValue().toString());
+                    this.drMenuBoxLevel.getValue().toString());
             db.executeQuery(query);
             this.showCourse();
         }
