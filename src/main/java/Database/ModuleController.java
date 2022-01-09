@@ -14,22 +14,22 @@ public class ModuleController {
 
     public ObservableList<Module> getModule() {
         ObservableList<Module> moduleList = FXCollections.observableArrayList();
-        String query = "SELECT * FROM module";
+        String query = "SELECT * FROM Module";
         try {
             Connection conn = db.getConnection();
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
                 Module moduleLists = new Module(
-                        rs.getInt("contentId"),
+                        rs.getInt("ModuleID"),
                         rs.getDate("publicationDate").toLocalDate(),
                         rs.getString("status"),
-                        rs.getString("title"),
-                        rs.getString("description"),
-                        rs.getDouble("version"),
-                        rs.getString("nameContact"),
-                        rs.getString("emailContact"),
-                        rs.getInt("serialNumber"));
+                        rs.getString("Title"),
+                        rs.getString("Description"),
+                        rs.getDouble("Version"),
+                        rs.getString("NameContact"),
+                        rs.getString("EmailContact"),
+                        rs.getInt("SerialNumber"));
                 moduleList.add(moduleLists);
             }
         } catch (SQLException e) {

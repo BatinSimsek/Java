@@ -21,16 +21,16 @@ public class WebcastModule {
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
                 Webcast webcastLists = new Webcast(
-                        rs.getInt("contentId"),
-                        rs.getDate("publicationDate").toLocalDate(),
-                        rs.getString("status"),
-                        rs.getString("title"),
-                        rs.getString("description"),
-                        rs.getDouble("duration"),
-                        rs.getDate("dateOfPublication").toLocalDate(),
-                        rs.getString("url"),
-                        rs.getString("nameSpeaker"),
-                        rs.getString("organizationSpeaker"));
+                        rs.getInt("WebcastID"),
+                        rs.getDate("DateOfPublication").toLocalDate(),
+                        rs.getString("Status"),
+                        rs.getString("Title"),
+                        rs.getString("Description"),
+                        rs.getDouble("Duration"),
+                        rs.getDate("DateOfPublication").toLocalDate(),
+                        rs.getString("Url"),
+                        rs.getString("NameSpeaker"),
+                        rs.getString("OrganizationSpeaker"));
                 webcastsList.add(webcastLists);
             }
         } catch (SQLException e) {

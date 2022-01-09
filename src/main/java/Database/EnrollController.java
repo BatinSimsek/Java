@@ -19,7 +19,7 @@ public class EnrollController {
     // Onderstaande methode geeft een lijst met cursist objecten.
     public ObservableList<Enroll> getEnrollmentList() {
         ObservableList<Enroll> enrollList = FXCollections.observableArrayList();
-        String query = "SELECT * FROM enrollment";
+        String query = "SELECT * FROM Enrollment";
 
         try {
             Connection con = db.getConnection();
@@ -28,10 +28,10 @@ public class EnrollController {
 
             while (rs.next()) {
                 Enroll enroll = new Enroll(
-                        rs.getString("emailFk"),
-                        rs.getInt("certificateFK"),
-                        rs.getDate("registrationDate").toLocalDate(),
-                        rs.getString("courseNameFK"));
+                        rs.getString("Email"),
+                        rs.getInt("CertificateID"),
+                        rs.getDate("RegistrationDate").toLocalDate(),
+                        rs.getString("CourseName"));
                 enrollList.add(enroll);
             }
         } catch (SQLException e) {

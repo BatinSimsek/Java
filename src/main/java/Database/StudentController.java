@@ -24,15 +24,15 @@ private Database db = new Database();
 
             while (rs.next()) {
                 Student student = new Student(
-                        rs.getString("email"),
-                        rs.getString("name"),
-                        rs.getDate("birthDate").toLocalDate(),
-                        rs.getString("gender"),
-                        rs.getString("city"),
-                        rs.getString("postalCode"),
-                        rs.getString("street"),
-                        rs.getInt("houseNr"),
-                        rs.getString("country"));
+                        rs.getString("Email"),
+                        rs.getString("Name"),
+                        rs.getDate("Birthdate").toLocalDate(),
+                        rs.getString("Gender"),
+                        rs.getString("City"),
+                        rs.getString("PostalCode"),
+                        rs.getString("Street"),
+                        rs.getInt("HouseNr"),
+                        rs.getString("Country"));
                 studentList.add(student);
             }
         } catch (SQLException e) {

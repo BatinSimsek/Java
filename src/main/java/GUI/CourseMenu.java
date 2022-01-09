@@ -41,10 +41,10 @@ public class CourseMenu {
     public void showCourse(){
         ObservableList<Course> courseTable = coursesController.getCourse();
         this.courseTable.refresh();
-        this.cursusNameTable.setCellValueFactory(new PropertyValueFactory<>("course"));
-        this.subjectTable.setCellValueFactory(new PropertyValueFactory<>("topic"));
-        this.descriptionTable.setCellValueFactory(new PropertyValueFactory<>("description"));
-        this.levelTable.setCellValueFactory(new PropertyValueFactory<>("level"));
+        this.cursusNameTable.setCellValueFactory(new PropertyValueFactory<>("CourseName"));
+        this.subjectTable.setCellValueFactory(new PropertyValueFactory<>("Topic"));
+        this.descriptionTable.setCellValueFactory(new PropertyValueFactory<>("Description"));
+        this.levelTable.setCellValueFactory(new PropertyValueFactory<>("Level"));
         this.courseTable.setItems(courseTable);
     }
 
@@ -110,7 +110,7 @@ public class CourseMenu {
     public void setCellValueFromTableToTextField(){
         courseTable.setOnMouseClicked(e -> {
             Course p1 = courseTable.getItems().get(courseTable.getSelectionModel().getSelectedIndex());
-            this.tfCourseName.setText(p1.getCourse());
+            this.tfCourseName.setText(p1.getCourseName());
             this.tfTopic.setText(p1.getTopic());
             this.tfDescription.setText(p1.getDescription());
             this.drMenuBoxLevel.setValue(p1.getLevel().toString());
@@ -130,7 +130,7 @@ public class CourseMenu {
             int row = pos.getRow();
             Course course = courseTable.getItems().get(row);
 
-            String query = coursesController.makeDeleteQuery(course.getCourse());
+            String query = coursesController.makeDeleteQuery(course.getCourseName());
             this.db.executeQuery(query);
             this.showCourse();
         }

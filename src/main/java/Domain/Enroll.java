@@ -45,7 +45,7 @@ public class Enroll {
         this.registrationDate = registrationDate;
     }
 
-    public String getCourseNameFK() {
+    public String getCourseName() {
         return courseNameFK;
     }
 

@@ -6,20 +6,20 @@ import java.util.List;
 public class Course {
     protected List<Course> recommendedCourse = new ArrayList<>();
     private ArrayList<ContentItem> addContentItem = new ArrayList<>();
-    private String course;
+    private String CourseName;
     private String topic;
     private String description;
     private String level;
 
-    public Course(String course, String topic, String description, String level){
-        this.course = course;
+    public Course(String CourseName, String topic, String description, String level){
+        this.CourseName = CourseName;
         this.topic = topic;
         this.description = description;
         this.level = level;
     }
 
-    public String getCourse() {
-        return course;
+    public String getCourseName() {
+        return CourseName;
     }
 
     public String getTopic() {

@@ -108,7 +108,7 @@ public class InschrijfMenu {
             int row = pos.getRow();
             Enroll enroll = enrollTable.getItems().get(row);
 
-            String query = enrollController.makeDeleteQuery(enroll.getEmail(),enroll.getCourseNameFK(),enroll.getRegistrationDate());
+            String query = enrollController.makeDeleteQuery(enroll.getEmail(),enroll.getCourseName(),enroll.getRegistrationDate());
             this.database.executeQuery(query);
             this.showEnrolls();
         }
@@ -175,9 +175,9 @@ public class InschrijfMenu {
         enrollTable.setOnMouseClicked(e -> {
             Enroll enroll = enrollTable.getItems().get(enrollTable.getSelectionModel().getSelectedIndex());
             this.comboBoxMail.setValue(enroll.getEmail());
-            this.comboBoxCourse.setValue(enroll.getCourseNameFK());
+            this.comboBoxCourse.setValue(enroll.getCourseName());
             this.emailCellValue = enroll.getEmail();
-            this.courseCellValue = enroll.getCourseNameFK();
+            this.courseCellValue = enroll.getCourseName();
         });
     }
 
@@ -200,7 +200,7 @@ public class InschrijfMenu {
         comboBoxCourse.setPrefWidth(150);
         comboBoxCourse.getItems().clear();
         for (Course courses : courseController.getCourse()) {
-            comboBoxCourse.getItems().add(courses.getCourse());
+            comboBoxCourse.getItems().add(courses.getCourseName());
         }
 
         gridPane.setPadding(new Insets(50,50,50,50));
@@ -222,10 +222,10 @@ public class InschrijfMenu {
 
     public void showEnrolls(){
         ObservableList<Enroll> enrollObservableList = enrollController.getEnrollmentList();
-        this.emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
-        this.certIDCol.setCellValueFactory(new PropertyValueFactory<>("certificateFK"));
-        this.dateCol.setCellValueFactory(new PropertyValueFactory<>("registrationDate"));
-        this.courseCol.setCellValueFactory(new PropertyValueFactory<>("courseNameFK"));
+        this.emailCol.setCellValueFactory(new PropertyValueFactory<>("Email"));
+        this.certIDCol.setCellValueFactory(new PropertyValueFactory<>("CertificateID"));
+        this.dateCol.setCellValueFactory(new PropertyValueFactory<>("RegistrationDate"));
+        this.courseCol.setCellValueFactory(new PropertyValueFactory<>("CourseName"));
         this.enrollTable.setItems(enrollObservableList);
     }
 

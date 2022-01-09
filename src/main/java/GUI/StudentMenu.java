@@ -67,15 +67,15 @@ public class StudentMenu {
     // onderstaande methode zet cursisten data in de cellen van de tabel.
     public void showCursists() {
         ObservableList<Student> studentList = sController.getStudentList();
-        this.emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
-        this.nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        this.genderCol.setCellValueFactory(new PropertyValueFactory<>("gender"));
-        this.bdCol.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
-        this.cityCol.setCellValueFactory(new PropertyValueFactory<>("city"));
-        this.pcCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
-        this.streetCol.setCellValueFactory(new PropertyValueFactory<>("street"));
-        this.houseNrCol.setCellValueFactory(new PropertyValueFactory<>("houseNr"));
-        this.countryCol.setCellValueFactory(new PropertyValueFactory<>("country"));
+        this.emailCol.setCellValueFactory(new PropertyValueFactory<>("Email"));
+        this.nameCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        this.genderCol.setCellValueFactory(new PropertyValueFactory<>("Gender"));
+        this.bdCol.setCellValueFactory(new PropertyValueFactory<>("Birthdate"));
+        this.cityCol.setCellValueFactory(new PropertyValueFactory<>("City"));
+        this.pcCol.setCellValueFactory(new PropertyValueFactory<>("PostalCode"));
+        this.streetCol.setCellValueFactory(new PropertyValueFactory<>("Street"));
+        this.houseNrCol.setCellValueFactory(new PropertyValueFactory<>("HouseNr"));
+        this.countryCol.setCellValueFactory(new PropertyValueFactory<>("Country"));
         this.studentTable.setItems(studentList);
     }
 
