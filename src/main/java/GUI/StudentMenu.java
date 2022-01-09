@@ -1,11 +1,10 @@
 package GUI;
 
 import Database.Database;
-import Domain.Student;
 import Database.StudentController;
-
-
 import Domain.Geslacht;
+import Domain.Student;
+import Logic.MailTools;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -17,7 +16,6 @@ import javafx.scene.layout.HBox;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Date;
 
 public class StudentMenu {
     private Database db = new Database();
@@ -180,16 +178,15 @@ public class StudentMenu {
             this.showCursists();
         } catch (SQLException exc) {
             exc.printStackTrace();
-            this.duplicateWarning();
+            this.warning("Email al in gebruik");
         }
     }
 
     // Methode controleerd of er een record uit de tabel geselecteerd is. Zo ja, dan wordt die verwijderd.
     private void deleteRecord() {
         if (studentTable.getSelectionModel().getSelectedItem() == null) {
-            this.nothingSelectedWarning();
-        }
-        else {
+            this.warning("Geen record geselecteerd");
+        } else {
             TablePosition pos = studentTable.getSelectionModel().getSelectedCells().get(0);
             int row = pos.getRow();
             Student student = studentTable.getItems().get(row);
@@ -203,28 +200,29 @@ public class StudentMenu {
     // Methode controleerd of er een record uit de tabel geselecteerd is. Zo ja, dan wordt deze geupdate.
     // Methode toont ook wanneer het opgegeven emailadress al in gebruik is.
     public void updateRecord() {
-        try{
-        if (studentTable.getSelectionModel().getSelectedItem() == null) {
-            this.nothingSelectedWarning();
-        } else {
-            String query = sController.makeUpdateQuery(
-                    this.tfEmail.getText(),
-                    this.tfName.getText(),
-                    Integer.parseInt(this.tfBirthDay.getText()),
-                    Integer.parseInt(this.tfBirthMonth.getText()),
-                    Integer.parseInt(this.tfBirthYear.getText()),
-                    this.genderMenuBox.getValue().toString(),
-                    this.tfCity.getText(),
-                    this.tfPostalCode.getText(),
-                    this.tfStreet.getText(),
-                    Integer.parseInt(this.tfhouseNr.getText()),
-                    this.tfCountry.getText(),
-                    this.emailCellValue);
-            db.executeQueryThrowsException(query);
-            this.showCursists();}
+        try {
+            if (studentTable.getSelectionModel().getSelectedItem() == null) {
+                this.warning("Er is niks geselecteerd");
+            } else {
+                String query = sController.makeUpdateQuery(
+                        this.tfEmail.getText(),
+                        this.tfName.getText(),
+                        Integer.parseInt(this.tfBirthDay.getText()),
+                        Integer.parseInt(this.tfBirthMonth.getText()),
+                        Integer.parseInt(this.tfBirthYear.getText()),
+                        this.genderMenuBox.getValue().toString(),
+                        this.tfCity.getText(),
+                        this.tfPostalCode.getText(),
+                        this.tfStreet.getText(),
+                        Integer.parseInt(this.tfhouseNr.getText()),
+                        this.tfCountry.getText(),
+                        this.emailCellValue);
+                db.executeQueryThrowsException(query);
+                this.showCursists();
+            }
         } catch (SQLException exc) {
             exc.printStackTrace();
-            duplicateWarning();
+            warning("Deze record bestaat al");
         }
     }
 
@@ -244,20 +242,15 @@ public class StudentMenu {
             this.tfStreet.setText(student.getStreet());
             this.tfhouseNr.setText(String.valueOf(student.getHouseNr()));
             this.tfCountry.setText(student.getCountry());
-            this.emailCellValue = student.getEmail();
+            if (MailTools.validateMailAddress(student.getEmail())) {
+                this.emailCellValue = student.getEmail();
+            } else warning("Geen geldig email address");
         });
     }
 
-    public void duplicateWarning() {
+    public void warning(String errorMsg) {
         Alert warningAlert = new Alert(Alert.AlertType.WARNING);
-        warningAlert.setContentText("Email al in gebruik");
-        warningAlert.show();
-    }
-
-    public void nothingSelectedWarning() {
-        Alert warningAlert = new Alert(Alert.AlertType.WARNING);
-        warningAlert.setContentText("Geen record geselecteerd");
+        warningAlert.setContentText(errorMsg);
         warningAlert.show();
     }
 }
-

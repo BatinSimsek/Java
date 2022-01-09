@@ -4,7 +4,6 @@ import Database.CourseController;
 import Database.Database;
 import Domain.Course;
 import Domain.Level;
-import Domain.Module;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
