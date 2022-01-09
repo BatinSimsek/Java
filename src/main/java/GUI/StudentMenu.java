@@ -242,9 +242,7 @@ public class StudentMenu {
             this.tfStreet.setText(student.getStreet());
             this.tfhouseNr.setText(String.valueOf(student.getHouseNr()));
             this.tfCountry.setText(student.getCountry());
-//            if (MailTools.validateMailAddress(student.getEmail())) {
-//                this.emailCellValue = student.getEmail();
-//            } else warning("Geen geldig email address");
+            this.emailCellValue = student.getEmail();
         });
     }
 
