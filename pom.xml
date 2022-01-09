@@ -43,6 +43,12 @@
             <artifactId>javafx-controls</artifactId>
             <version>11-ea+25</version>
         </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
