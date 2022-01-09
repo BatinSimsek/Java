@@ -1,12 +1,8 @@
 package Logic;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
-import Logic.PostalCode;
-
-import static org.testng.AssertJUnit.assertEquals;
-
+import org.junit.Test;
+import static org.junit.Assert.*;
 public class PostalCodeTest {
 
 
@@ -15,7 +11,7 @@ public class PostalCodeTest {
      * @requires postalCode == null;
      * @signals (NullPointerException) postalCode == null;
      */
-    @Test(expectedExceptions = NullPointerException.class)
+    @Test(expected = NullPointerException.class)
     public void testformatPostalCodeRequiresNullSignalsNullPointerException() {
         //Arrange
         String zipCode = null;
@@ -46,7 +42,7 @@ public class PostalCodeTest {
         assertEquals("1234 AA", result);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testformatPostalRequires333AB$SignalsIllegalArgumentException() {
         //Arrange
         String postalCode = "333AB";
@@ -56,7 +52,7 @@ public class PostalCodeTest {
         assertEquals("333AB", result);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testformatPostalRequires3333A$SignalsIllegalArgumentException() {
         //Arrange
         String postalCode = "3333A";
@@ -66,7 +62,7 @@ public class PostalCodeTest {
         assertEquals("3333A", result);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testformatPostalRequires33333AB$SignalsIllegalArgumentException() {
         //Arrange
         String postalCode = "33333AB";
@@ -76,7 +72,7 @@ public class PostalCodeTest {
         assertEquals("33333 AB", result);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testformatPostalRequires3333ABA$SignalsIllegalArgumentException() {
         //Arrange
         String postalCode = "3333ABA";
@@ -92,7 +88,7 @@ public class PostalCodeTest {
      * @signals (IllegalArgumentException);
      * }
      */
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testformatPostalCodeRequires1234A$SignalsIllegalArgumentException() {
         //Arrange
         String postalCode = "1234A$";
