@@ -42,13 +42,13 @@ public class CourseController {
     }
 
     public String updateCourse(String course, String topic, String description, String level) {
-        String query = "UPDATE Course SET Course = '" + course + "', Topic ='" + topic + "', Description = '" + description + "', Level = '" + level +
-                "' WHERE course = '" + course +"'";
+        String query = "UPDATE Course SET CourseName = '" + course + "', Topic ='" + topic + "', Description = '" + description + "', Level = '" + level +
+                "' WHERE CourseName = '" + course +"'";
         return query;
     }
 
     public String makeDeleteQuery (String course){
-        String query = "DELETE FROM Course WHERE Course =" + "'" + course + "'";
+        String query = "DELETE FROM Course WHERE CourseName =" + "'" + course + "'";
         return query;
     }
 }

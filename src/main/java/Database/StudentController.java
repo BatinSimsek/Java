@@ -15,7 +15,7 @@ private Database db = new Database();
 // Onderstaande methode geeft een lijst met cursist objecten.
     public ObservableList<Student> getStudentList() {
         ObservableList<Student> studentList = FXCollections.observableArrayList();
-        String query = "SELECT * FROM student";
+        String query = "SELECT * FROM Student";
 
         try {
             Connection con = db.getConnection();
@@ -46,7 +46,7 @@ private Database db = new Database();
     public String makeInsertQuery (String email, String name, int bd, int bm, int by, String gender, String city,
                                    String postalCode, String street, int houseNr, String country){
 
-        String query = "INSERT INTO student VALUES('" + email + "','"
+        String query = "INSERT INTO Student VALUES('" + email + "','"
                 + name + "','" + by + "-" + bm + "-" + bd + "','"
                + gender + "','" + city +  "','"
                 + postalCode + "','" + street + "',"
@@ -56,22 +56,22 @@ private Database db = new Database();
 
     //Deze methode stelt een query samen om een cursist record te verwijderen
     public String makeDeleteQuery (String email){
-        String query = "DELETE FROM student WHERE email =" + "'" + email + "'";
+        String query = "DELETE FROM Student WHERE email =" + "'" + email + "'";
         return query;
     }
 
     // deze methode stelt een update query samen om een cursist te updaten
     public String makeUpdateQuery(String emailNew, String name, int bd, int bm, int by, String gender, String city,
                                   String postalCode, String street, int houseNr, String country, String emailOld) {
-        String query = "UPDATE student SET email ='" + emailNew + "', name = '" + name +
-                "', birthDate = '" + by + "-" + bm + "-" + bd + "'," +
-                "gender = '" + gender +
-                "', city = '" + city +
-                "', postalCode = '" + postalCode +
-                "', street = '" + street +
-                "', houseNr = '" + houseNr +
-                "', country = '" + country +
-                "' WHERE email = '" + emailOld +"'";
+        String query = "UPDATE Student SET Email ='" + emailNew + "', Name = '" + name +
+                "', Birthdate = '" + by + "-" + bm + "-" + bd + "'," +
+                "Gender = '" + gender +
+                "', City = '" + city +
+                "', PostalCode = '" + postalCode +
+                "', Street = '" + street +
+                "', HouseNr = '" + houseNr +
+                "', Country = '" + country +
+                "' WHERE Email = '" + emailOld +"'";
         return query;
     }
 }
