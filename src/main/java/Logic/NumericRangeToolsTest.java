@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class NumericRangeToolsToTest {
+public class NumericRangeToolsTest {
     /**
      * @desc Validates if the input is within range of 0-100%
      *
@@ -28,6 +28,19 @@ public class NumericRangeToolsToTest {
     }
 
     @Test
+    public void testInputIsWithinRangeRequires50EnsuresTrue(){
+        //Arrange
+        int percentage = 50;
+
+        //Act
+        Boolean result = NumericRangeTools.isValidPercentage(percentage);
+
+        //Assert
+        assertEquals(true, result);
+    }
+
+
+    @Test
     public void testInputIsWithinRangeRequires0EnsuresTrue(){
         //Arrange
         int percentage = 0;
@@ -46,7 +59,7 @@ public class NumericRangeToolsToTest {
      * }
      */
 
-     @Test(expected = IllegalArgumentException.class)
+     @Test()
      public void testInputIsWithinRangeRequiresMinus1EnsuresFalse(){
          //Arrange
          int percentage = -1;
@@ -65,7 +78,7 @@ public class NumericRangeToolsToTest {
      *
      */
 
-     @Test(expected = IllegalArgumentException.class)
+     @Test()
      public void testInputIsWithinRangeRequires101EnsuresFalse(){
          //Arrange
          int percentage = 101;
