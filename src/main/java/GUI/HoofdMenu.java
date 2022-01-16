@@ -31,6 +31,8 @@ public class HoofdMenu extends Application {
     private CourseMenu courseMenu = new CourseMenu();
     private InschrijfMenu enrollMenu = new InschrijfMenu();
     private CompletedCourseOverview  ccOverview = new CompletedCourseOverview();
+    private EarnedCertificateOverview ecOverview = new EarnedCertificateOverview();
+
     private Label crudLabel = new Label("CRUD");
     private Label progressLabel = new Label("Voortgang invoeren");
     private Label viewLabel = new Label("Overzichten");
@@ -42,7 +44,7 @@ public class HoofdMenu extends Application {
     private Button view1 = new Button("Behaalde \n certificaten \n per gender");
     private Button view2 = new Button("view2");
     private Button view3 = new Button("view3");
-    private Button view4 = new Button("view4");
+    private Button view4 = new Button("Behaalde \n certificaten \n van acccount");
     private Button view5 = new Button("view5");
     private Button view6 = new Button("view6");
 
@@ -67,7 +69,7 @@ public class HoofdMenu extends Application {
         this.view1.setPadding(new Insets( 20,20,20,20));
         this.view2.setPadding(new Insets( 30,30,30,30));
         this.view3.setPadding(new Insets( 30,30,30,30));
-        this.view4.setPadding(new Insets( 30,30,30,30));
+        this.view4.setPadding(new Insets( 20,20,20,20));
         this.view5.setPadding(new Insets( 30,30,30,30));
         this.view6.setPadding(new Insets( 30,30,30,30));
 
@@ -80,7 +82,7 @@ public class HoofdMenu extends Application {
         this.view1.setFont(Font.font ("Verdana", 10));
         this.view2.setFont(Font.font ("Verdana", 15));
         this.view3.setFont(Font.font ("Verdana", 15));
-        this.view4.setFont(Font.font ("Verdana", 15));
+        this.view4.setFont(Font.font ("Verdana", 10));
         this.view5.setFont(Font.font ("Verdana", 15));
         this.view6.setFont(Font.font ("Verdana", 15));
 
@@ -136,9 +138,9 @@ public class HoofdMenu extends Application {
         viewMenu3.setAlignment(Pos.CENTER);
 
         this.view1.setOnAction((event) -> window.setScene(ccOverview.getView()));
-        //this.view2.setOnAction(actionEvent -> window.setScene(xxxxxxxxxxxxx .getScene()));
+        //this.view2.setOnAction(actionEvent -> window.setScene(xx.getView()));
         //this.view3.setOnAction((event) -> window.setScene( xxxxxxxxxxx .getView()));
-        //this.view4.setOnAction(actionEvent -> window.setScene(xxxxxxxxxxxxx .getScene()));
+        this.view4.setOnAction(actionEvent -> window.setScene(ecOverview.getView()));
         //this.view5.setOnAction((event) -> window.setScene( xxxxxxxxxxx .getView()));
         //this.view6.setOnAction(actionEvent -> window.setScene(xxxxxxxxxxxxx .getScene()));
 
@@ -154,6 +156,7 @@ public class HoofdMenu extends Application {
         enrollMenu.backBtn.setOnAction(actionEvent -> window.setScene(scene));
         studentMenu.backBtn.setOnAction(actionEvent -> window.setScene(scene));
         ccOverview.backBtn.setOnAction(actionEvent -> window.setScene(scene));
+        ecOverview.backBtn.setOnAction(actionEvent -> window.setScene(scene));
 
         window.setScene(scene);
         window.show();
