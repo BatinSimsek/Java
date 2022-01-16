@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Course {
     protected List<Course> recommendedCourse = new ArrayList<>();
-    private ArrayList<ContentItem> addContentItem = new ArrayList<>();
+    private ArrayList<ContentItems> addContentItems = new ArrayList<>();
     private String CourseName;
     private String topic;
     private String description;
@@ -42,12 +42,12 @@ public class Course {
         this.recommendedCourse.add(course);
     }
 
-    public void addContentItems(ContentItem contentItem){
-       this.addContentItem.add(contentItem);
+    public void addContentItems(ContentItems contentItems){
+       this.addContentItems.add(contentItems);
     }
 
     public void showContentItems(){
-        for (ContentItem c : this.addContentItem){
+        for (ContentItems c : this.addContentItems){
             c.getContentID();
         }
     }

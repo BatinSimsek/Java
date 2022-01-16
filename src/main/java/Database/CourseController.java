@@ -41,6 +41,13 @@ public class CourseController {
         return query;
     }
 
+    public String addContentCourse(int ContentID, String course){
+        String query = "INSERT INTO CourseContent VALUES('" + ContentID + "','" + course + "')";
+        return query;
+    }
+
+
+
     public String updateCourse(String course, String topic, String description, String level) {
         String query = "UPDATE Course SET CourseName = '" + course + "', Topic ='" + topic + "', Description = '" + description + "', Level = '" + level +
                 "' WHERE CourseName = '" + course +"'";

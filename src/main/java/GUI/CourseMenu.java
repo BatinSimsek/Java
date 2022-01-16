@@ -1,7 +1,9 @@
 package GUI;
 
 import Database.CourseController;
+import Database.ContentItemController;
 import Database.Database;
+import Domain.ContentItems;
 import Domain.Course;
 import Domain.Level;
 import javafx.collections.ObservableList;
@@ -16,6 +18,7 @@ import javafx.scene.layout.HBox;
 public class CourseMenu {
     private Database db = new Database();
     private CourseController coursesController = new CourseController();
+    private ContentItemController contentItemController = new ContentItemController();
     private TableView<Course> courseTable = new TableView<>();
     private TableColumn<Course, String> cursusNameTable = new TableColumn<>("Cursusnaam");
     private TableColumn<Course, String> subjectTable = new TableColumn<>("Onderwerp");
@@ -37,7 +40,8 @@ public class CourseMenu {
     private Button backButton = new Button("Terug");
 
 
-    public void showCourse(){
+    //haalt alle courses op
+    public void showCourse() {
         ObservableList<Course> courseTable = coursesController.getCourse();
         this.courseTable.refresh();
         this.cursusNameTable.setCellValueFactory(new PropertyValueFactory<>("CourseName"));
@@ -46,23 +50,47 @@ public class CourseMenu {
         this.levelTable.setCellValueFactory(new PropertyValueFactory<>("Level"));
         this.courseTable.setItems(courseTable);
     }
-
+//test
     public Scene getView() {
+
         BorderPane bp = new BorderPane();
         bp.setPadding(new Insets(25, 25, 25, 25));
 
         GridPane gridPane = new GridPane();
         gridPane.setVgap(10);
-        gridPane.setPadding(new Insets(25,25,25,25));
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
 
-        HBox hbox = new HBox ();
+        HBox hbox = new HBox();
         hbox.getChildren().setAll(this.btnInsert, this.btnUpdate, this.btnDelete);
         hbox.setSpacing(25);
-        hbox.setPadding(new Insets(20, 0, 0 , 0));
+        hbox.setPadding(new Insets(20, 0, 0, 0));
 
-        this.btnInsert.setOnAction((event)->this.insertRecord());
-        this.btnUpdate.setOnAction((event)->this.updateRecord());
-        this.btnDelete.setOnAction((event)->this.deleteRecord());
+        this.btnInsert.setOnAction((event) -> {
+            if (drMenuBoxContentItem.getItems().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("Selecteer een module!");
+
+                alert.showAndWait();
+            } else {
+                this.insertRecord();
+                this.insertCourseContent();
+            }
+        });
+        this.btnUpdate.setOnAction((event) -> {
+            if (event == null) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("Kies een module!");
+
+                alert.showAndWait();
+            }else {
+                this.updateRecord();
+            }
+        });
+        this.btnDelete.setOnAction((event) -> this.deleteRecord());
 
         setCellValueFromTableToTextField();
         this.courseTable.getColumns().addAll(this.cursusNameTable, this.subjectTable, this.descriptionTable, this.levelTable);
@@ -75,16 +103,18 @@ public class CourseMenu {
             drMenuBoxLevel.getItems().add(level);
         }
 
-//        for (){
-//            drMenuBoxLevel.getItems().add(content);
-//        }
+        for(ContentItems c: contentItemController.getContentItemList()){
+            if (c.getModuleTitle() != null){
+                this.drMenuBoxContentItem.getItems().add(c.getModuleTitle());
+            }
+        }
 
         gridPane.add(courseName, 0, 0);
         gridPane.add(tfCourseName, 1, 0);
-        gridPane.add(topic, 0 ,1);
+        gridPane.add(topic, 0, 1);
         gridPane.add(tfTopic, 1, 1);
-        gridPane.add(description, 0,2);
-        gridPane.add(tfDescription, 1,2);
+        gridPane.add(description, 0, 2);
+        gridPane.add(tfDescription, 1, 2);
         gridPane.add(level, 0, 3);
         gridPane.add(drMenuBoxLevel, 1, 3);
         gridPane.add(Content, 0, 4);
@@ -95,7 +125,7 @@ public class CourseMenu {
         return scene;
     }
 
-
+    //toevoeged de gegevens
     public void insertRecord() {
         String query = coursesController.addCourse(
                 this.tfCourseName.getText(),
@@ -106,7 +136,17 @@ public class CourseMenu {
         this.showCourse();
     }
 
-    public void setCellValueFromTableToTextField(){
+    public void insertCourseContent() {
+        boolean is = this.drMenuBoxContentItem.getSelectionModel().is
+        String query = coursesController.addContentCourse(
+          this.drMenuBoxContentItem.getSelectionModel().getSelectedIndex() + 1,
+          this.tfCourseName.getText());
+        db.executeQuery(query);
+        this.showCourse();
+    }
+
+    //Haalt de gegevens op van table en zet het in de kolomen neer
+    public void setCellValueFromTableToTextField() {
         courseTable.setOnMouseClicked(e -> {
             Course p1 = courseTable.getItems().get(courseTable.getSelectionModel().getSelectedIndex());
             this.tfCourseName.setText(p1.getCourseName());
@@ -116,12 +156,13 @@ public class CourseMenu {
         });
     }
 
-    private void deleteRecord(){
+    private void deleteRecord() {
         //Controleer of er een record geselecteerd is.
         if (courseTable.getSelectionModel().getSelectedItem() == null) {
             Alert warningAlert = new Alert(Alert.AlertType.WARNING);
             warningAlert.setContentText("Geen record geselecteerd");
-            warningAlert.show();}
+            warningAlert.show();
+        }
 
         // Ophalen en vervolgens verwijderen van record a.d.h.v muisselectie
         else {
@@ -135,12 +176,13 @@ public class CourseMenu {
         }
     }
 
+    //update de gegevens
     public void updateRecord() {
         if (courseTable.getSelectionModel().getSelectedItem() == null) {
             Alert warningAlert = new Alert(Alert.AlertType.WARNING);
             warningAlert.setContentText("Geen record geselecteerd");
-            warningAlert.show();}
-        else {
+            warningAlert.show();
+        } else {
             String query = coursesController.updateCourse(
                     this.tfCourseName.getText(),
                     this.tfTopic.getText(),

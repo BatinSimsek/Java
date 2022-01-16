@@ -2,38 +2,32 @@ package Domain;
 
 import java.time.LocalDate;
 
-public class Module extends ContentItem {
+public class Module {
     private String title;
-    private String description;
+    private String descreption;
     private double version;
-    private String nameContact;
     private String emailContact;
     private int serialNumber;
 
-    public Module(int contentId, LocalDate publicationDate ,String status ,String title, String description, double version, String nameContact, String emailContact, int serialNumber ){
-        super(contentId, publicationDate, status);
+    public Module( String title, String descreption, double version, String emailContact, int serialNumber){
         this.title = title;
-        this.description = description;
+        this.descreption = descreption;
         this.version = version;
-        this.nameContact = nameContact;
         this.emailContact = emailContact;
         this.serialNumber = serialNumber;
     }
+
 
     public String getTitle() {
         return title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDescreption() {
+        return descreption;
     }
 
     public double getVersion() {
         return version;
-    }
-
-    public String getNameContact() {
-        return nameContact;
     }
 
     public String getEmailContact() {
@@ -42,5 +36,10 @@ public class Module extends ContentItem {
 
     public int getSerialNumber() {
         return serialNumber;
+    }
+
+    @Override
+    public String toString() {
+        return this.getTitle();
     }
 }
