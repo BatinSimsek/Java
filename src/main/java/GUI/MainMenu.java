@@ -29,6 +29,7 @@ public class MainMenu extends Application {
     private CompletedCourseOverview  ccOverview = new CompletedCourseOverview();
     private EarnedCertificateOverview ecOverview = new EarnedCertificateOverview();
     private TopThreeWebcastOverview wcOverview = new TopThreeWebcastOverview();
+    private AmmountPassedCourseView apcOverview = new AmmountPassedCourseView();
 
     private Label crudLabel = new Label("CRUD");
     private Label progressLabel = new Label("Voortgang invoeren");
@@ -38,12 +39,12 @@ public class MainMenu extends Application {
     private Button enrollBtn = new Button("Inschrijven");
     private Button webcastBtn = new Button("Webcast");
     private Button moduleBtn = new Button("Module");
-    private Button view1 = new Button("Behaalde \n certificaten \n per gender");
+    private Button view1 = new Button("Behaalde\ncertificaten\nper gender");
     private Button view2 = new Button("view2");
     private Button view3 = new Button("view3");
-    private Button view4 = new Button("Behaalde \n certificaten \n van acccount");
-    private Button view5 = new Button("Top \n drie webcast");
-    private Button view6 = new Button("view6");
+    private Button view4 = new Button("Behaalde\ncertificaten\nvan acccount");
+    private Button view5 = new Button("Top\ndrie webcast");
+    private Button view8 = new Button("Hoe vaak is\neen cursus\nbehaald");
 
 
 
@@ -68,7 +69,7 @@ public class MainMenu extends Application {
         this.view3.setPadding(new Insets( 30,30,30,30));
         this.view4.setPadding(new Insets( 20,20,20,20));
         this.view5.setPadding(new Insets( 20,20,20,20));
-        this.view6.setPadding(new Insets( 30,30,30,30));
+        this.view8.setPadding(new Insets( 20,20,20,20));
 
 
         this.cursusBtn.setFont(Font.font ("Verdana", 15));
@@ -81,7 +82,7 @@ public class MainMenu extends Application {
         this.view3.setFont(Font.font ("Verdana", 15));
         this.view4.setFont(Font.font ("Verdana", 10));
         this.view5.setFont(Font.font ("Verdana", 10));
-        this.view6.setFont(Font.font ("Verdana", 15));
+        this.view8.setFont(Font.font ("Verdana", 10));
 
         this.progressLabel.setFont(Font.font ("Verdana", 20));
         this.crudLabel.setFont(Font.font ("Verdana", 20));
@@ -127,7 +128,7 @@ public class MainMenu extends Application {
         HBox viewMenu2 = new HBox();
         viewMenu2.setPadding(new Insets(10));
         viewMenu2.setSpacing(25);
-        viewMenu2.getChildren().addAll(this.view4,this.view5, view6);
+        viewMenu2.getChildren().addAll(this.view4,this.view5, view8);
         viewMenu2.setAlignment(Pos.CENTER);
 
         VBox viewMenu3 = new VBox();
@@ -139,7 +140,7 @@ public class MainMenu extends Application {
         //this.view3.setOnAction((event) -> window.setScene( xxxxxxxxxxx .getView()));
         this.view4.setOnAction(actionEvent -> window.setScene(ecOverview.getView()));
         this.view5.setOnAction((event) -> window.setScene( wcOverview.getView()));
-        //this.view6.setOnAction(actionEvent -> window.setScene(xxxxxxxxxxxxx .getScene()));
+        this.view8.setOnAction(actionEvent -> window.setScene(apcOverview.getView()));
 
         //scene layout
         layout.setTop(crudMenu2);
@@ -155,6 +156,7 @@ public class MainMenu extends Application {
         ccOverview.backBtn.setOnAction(actionEvent -> window.setScene(scene));
         ecOverview.backBtn.setOnAction(actionEvent -> window.setScene(scene));
         wcOverview.backBtn.setOnAction(actionEvent -> window.setScene(scene));
+        apcOverview.backBtn.setOnAction(actionEvent -> window.setScene(scene));
 
         window.setScene(scene);
         window.show();
