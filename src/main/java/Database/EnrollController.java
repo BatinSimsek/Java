@@ -1,8 +1,6 @@
 package Database;
 
 import Domain.Enroll;
-import GUI.InschrijfMenu;
-import com.sun.jdi.request.DuplicateRequestException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

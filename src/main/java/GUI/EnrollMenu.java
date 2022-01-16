@@ -7,8 +7,6 @@ import Database.EnrollController;
 import Domain.Course;
 import Domain.Enroll;
 import Domain.Student;
-import com.microsoft.sqlserver.jdbc.SQLServerDataTable;
-import com.sun.jdi.request.DuplicateRequestException;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -18,15 +16,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 
-import java.sql.SQLData;
-import java.sql.SQLDataException;
 import java.sql.SQLException;
-import java.sql.SQLWarning;
 import java.time.LocalDate;
-import java.util.DuplicateFormatFlagsException;
 
 
-public class InschrijfMenu {
+public class EnrollMenu {
         public Button backBtn = new Button("Terug");
         private final Button enrollBtn = new Button("Inschrijven");
         private final Label introText = new Label("Schrijf je in!");

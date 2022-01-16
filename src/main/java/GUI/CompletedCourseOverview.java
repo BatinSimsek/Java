@@ -20,7 +20,7 @@ public class CompletedCourseOverview {
 
     private ComboBox genderMenuBox = new ComboBox();
 
-    private Label genderLabel = new Label("Gelsacht: ");
+    private Label genderLabel = new Label("Geslacht: ");
     private Label descriptionlabel = new Label("Bekijk het percentage behaalde cursussen per geslacht");
     private Label resultLabel = new Label();
     private Button resultButton = new Button("Bereken");

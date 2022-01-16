@@ -14,24 +14,21 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
-import javax.swing.*;
 
 /**
  * @author quinc
  */
-public class HoofdMenu extends Application {
+public class MainMenu extends Application {
     private StudentMenu studentMenu = new StudentMenu();
     private CourseMenu courseMenu = new CourseMenu();
-    private InschrijfMenu enrollMenu = new InschrijfMenu();
+    private EnrollMenu enrollMenu = new EnrollMenu();
     private CompletedCourseOverview  ccOverview = new CompletedCourseOverview();
     private EarnedCertificateOverview ecOverview = new EarnedCertificateOverview();
+    private TopThreeWebcastOverview wcOverview = new TopThreeWebcastOverview();
 
     private Label crudLabel = new Label("CRUD");
     private Label progressLabel = new Label("Voortgang invoeren");
@@ -45,7 +42,7 @@ public class HoofdMenu extends Application {
     private Button view2 = new Button("view2");
     private Button view3 = new Button("view3");
     private Button view4 = new Button("Behaalde \n certificaten \n van acccount");
-    private Button view5 = new Button("view5");
+    private Button view5 = new Button("Top \n drie webcast");
     private Button view6 = new Button("view6");
 
 
@@ -70,7 +67,7 @@ public class HoofdMenu extends Application {
         this.view2.setPadding(new Insets( 30,30,30,30));
         this.view3.setPadding(new Insets( 30,30,30,30));
         this.view4.setPadding(new Insets( 20,20,20,20));
-        this.view5.setPadding(new Insets( 30,30,30,30));
+        this.view5.setPadding(new Insets( 20,20,20,20));
         this.view6.setPadding(new Insets( 30,30,30,30));
 
 
@@ -83,7 +80,7 @@ public class HoofdMenu extends Application {
         this.view2.setFont(Font.font ("Verdana", 15));
         this.view3.setFont(Font.font ("Verdana", 15));
         this.view4.setFont(Font.font ("Verdana", 10));
-        this.view5.setFont(Font.font ("Verdana", 15));
+        this.view5.setFont(Font.font ("Verdana", 10));
         this.view6.setFont(Font.font ("Verdana", 15));
 
         this.progressLabel.setFont(Font.font ("Verdana", 20));
@@ -141,7 +138,7 @@ public class HoofdMenu extends Application {
         //this.view2.setOnAction(actionEvent -> window.setScene(xx.getView()));
         //this.view3.setOnAction((event) -> window.setScene( xxxxxxxxxxx .getView()));
         this.view4.setOnAction(actionEvent -> window.setScene(ecOverview.getView()));
-        //this.view5.setOnAction((event) -> window.setScene( xxxxxxxxxxx .getView()));
+        this.view5.setOnAction((event) -> window.setScene( wcOverview.getView()));
         //this.view6.setOnAction(actionEvent -> window.setScene(xxxxxxxxxxxxx .getScene()));
 
         //scene layout
@@ -157,6 +154,7 @@ public class HoofdMenu extends Application {
         studentMenu.backBtn.setOnAction(actionEvent -> window.setScene(scene));
         ccOverview.backBtn.setOnAction(actionEvent -> window.setScene(scene));
         ecOverview.backBtn.setOnAction(actionEvent -> window.setScene(scene));
+        wcOverview.backBtn.setOnAction(actionEvent -> window.setScene(scene));
 
         window.setScene(scene);
         window.show();

@@ -137,7 +137,6 @@ public class CourseMenu {
     }
 
     public void insertCourseContent() {
-        boolean is = this.drMenuBoxContentItem.getSelectionModel().is
         String query = coursesController.addContentCourse(
           this.drMenuBoxContentItem.getSelectionModel().getSelectedIndex() + 1,
           this.tfCourseName.getText());
