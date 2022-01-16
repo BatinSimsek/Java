@@ -46,10 +46,4 @@ public class Course {
        this.addContentItems.add(contentItems);
     }
 
-    public void showContentItems(){
-        for (ContentItems c : this.addContentItems){
-            c.getContentID();
-        }
-    }
-
 }

@@ -50,7 +50,7 @@ public class CourseMenu {
         this.levelTable.setCellValueFactory(new PropertyValueFactory<>("Level"));
         this.courseTable.setItems(courseTable);
     }
-//test
+
     public Scene getView() {
 
         BorderPane bp = new BorderPane();
@@ -136,6 +136,7 @@ public class CourseMenu {
         this.showCourse();
     }
 
+    //toevoeg de module aan cursus
     public void insertCourseContent() {
         String query = coursesController.addContentCourse(
           this.drMenuBoxContentItem.getSelectionModel().getSelectedIndex() + 1,

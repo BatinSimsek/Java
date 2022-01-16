@@ -54,6 +54,7 @@ public class TopThreeWebcastOverview {
         return scene;
     }
 
+    //laat de top 3 zien
     public void topWebcast() {
         ArrayList<String> webcast = webcastController.getTopThreeWebcast();
         String result = "";
